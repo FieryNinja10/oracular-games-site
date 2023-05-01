@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav-button {
+    transition: all 0.3s;
+    text-decoration: solid red;
+    text-underline-offset: 0.3rem;
+    place-items: center;
+}
+
+.nav-button:hover {
+    text-decoration: underline solid red 4px;
+}
+
+@media screen and (min-width: 768px) {
+    .nav-button:hover {
+        background-color: rgb(36, 36, 36);
+    }
+}
