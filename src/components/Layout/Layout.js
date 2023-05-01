@@ -22,6 +22,7 @@ const Layout = ({ children }) => {
                 />
               </Link>
             </div>
+            {/* Links */}
             <div
               className={`font-semibold uppercase absolute md:static transition-all bg-primary md:bg-transparent right-0 left-0 top-0 flex-col md:flex-row ${
                 navbar ? "left-0" : "left-[100vw] md:flex"
@@ -80,6 +81,7 @@ const Layout = ({ children }) => {
               </ul>
             </div>
           </div>
+          {/* Sign up/Log in */}
           <div className="flex justify-center items-center content-center">
             <button
               type="button"
