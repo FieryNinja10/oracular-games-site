@@ -3,9 +3,22 @@ import Link from "next/link";
 import { useState } from "react";
 import { RiMenu3Fill, RiCloseFill } from "react-icons/ri";
 import { logo } from "@/assets";
+import { AuthForm, AuthModal } from "..";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  login,
+  signup,
+  openModal,
+  closeModal,
+  getValues
+} from "@/slices/formSlice.js";
 
 const Layout = ({ children }) => {
   const [navbar, setNavbar] = useState(false);
+
+  // slices
+  const { formType, isModalOpen } = useSelector(getValues());
+  const dispatch = useDispatch();
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -86,12 +99,20 @@ const Layout = ({ children }) => {
             <button
               type="button"
               className="m-3 rounded px-4 py-2 transition-all hover:bg-secondary"
+              onClick={() => {
+                dispatch(openModal());
+                dispatch(login());
+              }}
             >
               Log In
             </button>
             <button
               type="button"
               className="m-3 rounded bg-rad px-3 py-2 transition-all hover:bg-darkRad"
+              onClick={() => {
+                dispatch(openModal());
+                dispatch(signup());
+              }}
             >
               Sign Up
             </button>
@@ -111,6 +132,13 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </nav>
+      <AuthModal
+        isOpen={isModalOpen}
+        closeModal={() => dispatch(closeModal())}
+        title={formType === "login" ? "Log In" : "Sign Up"}
+      >
+        <AuthForm />
+      </AuthModal>
       {children}
     </div>
   );
