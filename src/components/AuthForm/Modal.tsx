@@ -1,7 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-const AuthModal = ({ isOpen, closeModal, title, children }) => {
+export interface AuthModalProps {
+  isOpen: boolean, closeModal: any, title: string, children: React.ReactNode
+}
+
+const AuthModal = ({ isOpen, closeModal, title, children }: AuthModalProps) => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
