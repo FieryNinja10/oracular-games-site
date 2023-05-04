@@ -19,12 +19,11 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter;
 
   // Auth Form Reducer
+  const dispatch = useDispatch();
   const { formType, isModalOpen } = useSelector((state: RootState) => {
     return state.authForm;
   });
-
   const { OPEN_AUTH_MODAL, CLOSE_AUTH_MODAL } = authFormActions;
-  const dispatch = useDispatch();
 
   return (
     <div className="flex h-full w-full flex-col">
