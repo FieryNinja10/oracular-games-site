@@ -1,27 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import useRouter from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RiMenu3Fill, RiCloseFill } from "react-icons/ri";
 import { logo } from "@/assets";
 import { AuthForm, AuthModal } from "..";
+import type { RootState } from "@/redux/store";
+import { useSelector, useDispatch } from "react-redux";
+import { authFormActions } from "@/redux/reducers";
 
 export interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  // Basic Navbar Functionality
   const [navbar, setNavbar] = useState(false);
   const router = useRouter;
 
+  // Auth Form Reducer
+  const { formType, isModalOpen } = useSelector((state: RootState) => {
+    return state.authForm;
+  });
+
+  const { OPEN_AUTH_MODAL, CLOSE_AUTH_MODAL } = authFormActions;
+  const dispatch = useDispatch();
+
   return (
     <div className="flex h-full w-full flex-col">
-      <nav className="flex justify-between w-full bg-primary fixed top-0 left-0 right-0 z-10 font-rubik text-white">
-        <div className="flex justify-between px-4 w-full">
+      <nav className="fixed left-0 right-0 top-0 z-10 flex w-full justify-between bg-primary font-rubik text-white">
+        <div className="flex w-full justify-between px-4">
           <div className="flex">
             {/* LOGO */}
             <div
-              className="py-4 md:px-4 hover:bg-secondary cursor-pointer"
+              className="cursor-pointer py-4 hover:bg-secondary md:px-4"
               onClick={() => {
                 router.push("/");
               }}
@@ -36,24 +48,24 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
             {/* Links */}
             <div
-              className={`font-semibold uppercase absolute md:static transition-all bg-primary md:bg-transparent right-0 left-0 top-0 flex-col md:flex-row ${
+              className={`absolute left-0 right-0 top-0 flex-col bg-primary font-semibold uppercase transition-all md:static md:flex-row md:bg-transparent ${
                 navbar ? "left-0" : "left-[100vw] md:flex"
               }`}
             >
               <button
                 type="button"
-                className={`p-2 rounded-md md:hidden top-2 right-4 absolute focus:bg-secondary ${
+                className={`absolute right-4 top-2 rounded-md p-2 focus:bg-secondary md:hidden ${
                   navbar ? "flex" : "hidden"
                 }`}
                 onClick={() => {
-                  setNavbar(!navbar);
+                  setNavbar(false);
                 }}
               >
                 <RiCloseFill className="h-[37px] w-[37px]" />
               </button>
-              <ul className="h-screen md:h-auto items-center justify-center md:flex ">
+              <ul className="h-screen items-center justify-center md:flex md:h-auto ">
                 <li
-                  className="nav-button py-4 md:px-4 text-center hover:bg-secondary cursor-pointer"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/news");
@@ -68,7 +80,7 @@ const Layout = ({ children }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button py-4 md:px-4 text-center hover:bg-secondary cursor-pointer"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/games");
@@ -83,7 +95,7 @@ const Layout = ({ children }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button py-4 md:px-4 text-center hover:bg-secondary cursor-pointer"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/team");
@@ -98,7 +110,7 @@ const Layout = ({ children }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button py-4 md:px-4 text-center hover:bg-secondary cursor-pointer"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
                   onClick={() => setNavbar(!navbar)}
                 >
                   <Link
@@ -115,18 +127,22 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
           </div>
           {/* Sign up/Log in */}
-          <div className="flex justify-center items-center content-center">
+          <div className="flex content-center items-center justify-center">
             <button
               type="button"
               className="m-3 rounded px-4 py-2 transition-all hover:bg-secondary"
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(OPEN_AUTH_MODAL("login"));
+              }}
             >
               Log In
             </button>
             <button
               type="button"
               className="m-3 rounded bg-rad px-3 py-2 transition-all hover:bg-darkRad"
-              onClick={() => {}}
+              onClick={() => {
+                dispatch(OPEN_AUTH_MODAL("signup"));
+              }}
             >
               Sign Up
             </button>
@@ -134,9 +150,9 @@ const Layout = ({ children }: LayoutProps) => {
             <div className="md:hidden">
               <button
                 type="button"
-                className="p-2 rounded-md focus:bg-secondary"
+                className="rounded-md p-2 focus:bg-secondary"
                 onClick={() => {
-                  setNavbar(!navbar);
+                  setNavbar(true);
                 }}
               >
                 <RiMenu3Fill className="h-[37px] w-[37px]" />
@@ -145,7 +161,11 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
         </div>
       </nav>
-      <AuthModal isOpen={false} closeModal={{}} title="">
+      <AuthModal
+        isOpen={isModalOpen}
+        closeModal={dispatch(CLOSE_AUTH_MODAL())}
+        title={formType === "login" ? "Log In" : "Sign Up"}
+      >
         <AuthForm />
       </AuthModal>
       {children}
