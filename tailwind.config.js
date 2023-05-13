@@ -21,8 +21,8 @@ module.exports = {
         darkRad: "rgb(177, 0, 0)"
       },
       fontFamily: {
-        rubik: "'Rubik', sans-serif",
-        nunito: "'Nunito', sans-serif"
+        rubik: ["var(--font-rubik)"],
+        nunito: ["var(--font-nunito)"]
       }
     }
   },

@@ -1,33 +1,42 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import useRouter from "next/router";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { RiMenu3Fill, RiCloseFill } from "react-icons/ri";
-import { logo } from "@/assets";
-import { AuthForm, AuthModal } from "..";
-import type { RootState } from "@/redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import { authFormActions } from "@/redux/reducers";
+import logo from "~/logo.png";
 
 export interface LayoutProps {
   children: React.ReactNode;
+  color?: string;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, color }: LayoutProps) => {
   // Basic Navbar Functionality
   const [navbar, setNavbar] = useState(false);
-  const router = useRouter;
+  const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
-  // Auth Form Reducer
-  const dispatch = useDispatch();
-  const { formType, isModalOpen } = useSelector((state: RootState) => {
-    return state.authForm;
-  });
-  const { OPEN_AUTH_MODAL, CLOSE_AUTH_MODAL } = authFormActions;
+  const checkScrolled = () => {
+    if (window.scrollY >= 25) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", checkScrolled);
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col">
-      <nav className="fixed left-0 right-0 top-0 z-10 flex w-full justify-between bg-primary font-rubik text-white">
+      <nav
+        className={`fixed left-0 right-0 top-0 z-10 flex w-full justify-between bg-primary font-rubik text-white transition-all ${
+          color === undefined ? "bg-primary" : color
+        }`}
+      >
         <div className="flex w-full justify-between px-4">
           <div className="flex">
             {/* LOGO */}
@@ -131,7 +140,7 @@ const Layout = ({ children }: LayoutProps) => {
               type="button"
               className="m-3 rounded px-4 py-2 transition-all hover:bg-secondary"
               onClick={() => {
-                dispatch(OPEN_AUTH_MODAL("login"));
+                router.push("/login");
               }}
             >
               Log In
@@ -140,7 +149,7 @@ const Layout = ({ children }: LayoutProps) => {
               type="button"
               className="m-3 rounded bg-rad px-3 py-2 transition-all hover:bg-darkRad"
               onClick={() => {
-                dispatch(OPEN_AUTH_MODAL("signup"));
+                router.push("/signup");
               }}
             >
               Sign Up
@@ -160,14 +169,7 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
         </div>
       </nav>
-      <AuthModal
-        isOpen={isModalOpen}
-        closeModal={dispatch(CLOSE_AUTH_MODAL())}
-        title={formType === "login" ? "Log In" : "Sign Up"}
-      >
-        <AuthForm />
-      </AuthModal>
-      {children}
+      <div className="mt-[69px] h-screen w-screen">{children}</div>
     </div>
   );
 };
