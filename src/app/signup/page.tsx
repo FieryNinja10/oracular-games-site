@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const Signup = () => {
   return (
-    <Navbar color="bg-black/95">
+    <Navbar>
       <div className="flex h-full items-center justify-between">
         <AuthForm />
         <FormIMG />
