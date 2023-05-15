@@ -41,7 +41,7 @@ const Layout = ({ children, color }: LayoutProps) => {
           <div className="flex">
             {/* LOGO */}
             <div
-              className="cursor-pointer py-4 hover:bg-secondary md:px-4"
+              className="cursor-pointer py-4 hover:bg-secondary md:px-4 transition-all"
               onClick={() => {
                 router.push("/");
               }}
