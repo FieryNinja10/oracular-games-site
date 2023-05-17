@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const Login = () => {
   return (
-    <Navbar>
+    <Navbar color="bg-black/95">
       <div className="flex h-full items-center justify-between">
         <FormIMG />
         <AuthForm />
