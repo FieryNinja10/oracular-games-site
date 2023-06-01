@@ -1,32 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
 
 import useForm from "@/hooks/useForm";
-import { useAuthStore } from "@/context";
-import { UserDataType } from "@/types";
 
-const initialValues: UserDataType = {
+const initialValues: {
+  username: string;
+  age: string;
+  email: string;
+  password: string;
+} = {
+  username: "",
+  age: "",
   email: "",
-  password: "",
-  name: "",
-  gamerTag: "",
-  tag: "",
-  region: "",
-  age: new Date()
+  password: ""
 };
 
 const AuthForm = () => {
   const { form, handleChange, resetForm } = useForm(initialValues);
-  const [part, setPart] = useState(1);
-
-  const signUp = useAuthStore((state) => state.signUp);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    signUp(form);
-  };
 
   return (
     <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
@@ -47,109 +38,77 @@ const AuthForm = () => {
             </p>
           </div>
         </div>
-        {part === 1 ? (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setPart(2);
-            }}
-            className="mt-8 space-y-5"
-          >
-            <div>
-              <label className="font-medium" htmlFor="email">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Email"
-                required
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="font-medium" htmlFor="password">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                minLength={6}
-                placeholder="Password"
-                required
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="font-medium" htmlFor="name">
-                Name
-              </label>
-              <input
-                type="name"
-                id="name"
-                name="name"
-                placeholder="Name"
-                required
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="font-medium" htmlFor="birthday">
-                Birthday
-              </label>
-              <input
-                type="date"
-                id="birthday"
-                name="birthday"
-                placeholder="Birthday"
-                required
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <button className="w-full rounded-lg bg-primary px-4 py-2 font-medium text-white duration-150 hover:bg-rad active:bg-darkRad">
-              Next
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-            <div>
-              <label className="font-medium" htmlFor="gamertag">
-                Gamer-Tag
-              </label>
-              <input
-                type="gamertag"
-                id="gamertag"
-                name="gamertag"
-                placeholder="Gamer-Tag"
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <label className="font-medium" htmlFor="region">
-                Region
-              </label>
-              <input
-                type="region"
-                id="region"
-                name="region"
-                minLength={6}
-                placeholder="Region"
-                className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
-                onChange={handleChange}
-              />
-            </div>
-            <button className="w-full rounded-lg bg-primary px-4 py-2 font-medium text-white duration-150 hover:bg-rad active:bg-darkRad">
-              Sign up
-            </button>
-          </form>
-        )}
+        <form onSubmit={(e) => e.preventDefault()} className="mt-8 space-y-5">
+          <div>
+            <label className="font-medium" htmlFor="email">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Email"
+              required
+              className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
+              onChange={handleChange}
+              value={form.email}
+            />
+          </div>
+          <div>
+            <label className="font-medium" htmlFor="password">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              minLength={6}
+              placeholder="Password"
+              required
+              className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
+              onChange={handleChange}
+              value={form.password}
+            />
+          </div>
+          <div>
+            <label className="font-medium" htmlFor="username">
+              Username
+            </label>
+            <input
+              type="username"
+              id="username"
+              name="username"
+              placeholder="Username"
+              required
+              className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
+              onChange={handleChange}
+              value={form.username}
+            />
+          </div>
+          <div>
+            <label className="font-medium" htmlFor="birthday">
+              Birthday
+            </label>
+            <input
+              type="birthday"
+              id="birthday"
+              name="birthday"
+              placeholder="Birthday"
+              required
+              className="mt-2 w-full rounded-lg border bg-transparent px-3 py-2 text-gray-500 shadow-sm outline-none focus:border-primary"
+              onChange={handleChange}
+              value={form.age}
+            />
+          </div>
+          <button className="w-full rounded-lg bg-primary px-4 py-2 font-medium text-white duration-150 hover:bg-rad active:bg-darkRad">
+            Sign up
+          </button>
+          <div className="text-center font-nunito">
+            <a href="javascript:void(0)" className="hover:text-rad">
+              Forgot password?
+            </a>
+          </div>
+        </form>
       </div>
     </main>
   );

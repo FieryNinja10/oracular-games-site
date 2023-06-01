@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,12 +11,11 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  password String
-  name     String    @db.VarChar(50)
-  gamerTag String?   @default("Player") @db.VarChar(30)
-  tag      String    @unique @db.VarChar(6)
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String
+  gamerTag String?  @default("Player")
+  tag      String   @unique @default(dbgenerated())
   region   String?
-  age      DateTime? @db.Date
+  age      DateTime @db.Date
 }
