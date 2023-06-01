@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
+  id       String   @id @default(cuid())
   email    String   @unique
+  password String
   name     String
   gamerTag String?  @default("Player")
-  tag      String   @unique @default(dbgenerated())
+  tag      String?  @unique @default(dbgenerated()) @db.VarChar(6)
   region   String?
   age      DateTime @db.Date
 }
