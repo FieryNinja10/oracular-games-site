@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Navbar } from "@/components";
 import FormIMG from "./FormIMG";
 import AuthForm from "./AuthForm";
 
@@ -11,12 +10,10 @@ export const metadata: Metadata = {
 
 const Signup = () => {
   return (
-    <Navbar color="bg-black/95">
-      <div className="flex h-full items-center justify-between">
-        <AuthForm />
-        <FormIMG />
-      </div>
-    </Navbar>
+    <div className="flex h-full items-center justify-between">
+      <FormIMG />
+      <AuthForm />
+    </div>
   );
 };
 

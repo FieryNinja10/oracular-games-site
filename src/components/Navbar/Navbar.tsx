@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { RiMenu3Fill, RiCloseFill } from "react-icons/ri";
+import { Menu, X } from "lucide-react";
+
 import logo from "~/logo.png";
 
 export interface LayoutProps {
@@ -33,15 +34,15 @@ const Layout = ({ children, color }: LayoutProps) => {
   return (
     <div className="flex h-full w-full flex-col">
       <nav
-        className={`fixed left-0 right-0 top-0 z-10 flex w-full justify-between bg-primary font-rubik text-white transition-all ${
-          color === undefined ? "bg-primary" : color
+        className={`fixed left-0 right-0 top-0 z-10 flex w-full justify-between bg-prime font-rubik text-white transition-all ${
+          color === undefined ? "bg-prime" : color
         }`}
       >
         <div className="flex w-full justify-between px-4">
           <div className="flex">
             {/* LOGO */}
             <div
-              className="cursor-pointer py-4 hover:bg-secondary md:px-4 transition-all"
+              className="cursor-pointer py-4 hover:bg-second md:px-4 transition-all"
               onClick={() => {
                 router.push("/");
               }}
@@ -56,24 +57,24 @@ const Layout = ({ children, color }: LayoutProps) => {
             </div>
             {/* Links */}
             <div
-              className={`absolute left-0 right-0 top-0 flex-col bg-primary font-semibold uppercase transition-all md:static md:flex-row md:bg-transparent ${
+              className={`absolute left-0 right-0 top-0 flex-col bg-prime font-semibold uppercase transition-all md:static md:flex-row md:bg-transparent ${
                 navbar ? "left-0" : "left-[100vw] md:flex"
               }`}
             >
               <button
                 type="button"
-                className={`absolute right-4 top-2 rounded-md p-2 focus:bg-secondary md:hidden ${
+                className={`absolute right-4 top-2 rounded-md p-2 focus:bg-second md:hidden ${
                   navbar ? "flex" : "hidden"
                 }`}
                 onClick={() => {
                   setNavbar(false);
                 }}
               >
-                <RiCloseFill className="h-[37px] w-[37px]" />
+                <X className="h-[37px] w-[37px]" />
               </button>
               <ul className="h-screen items-center justify-center md:flex md:h-auto ">
                 <li
-                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-second md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/news");
@@ -88,7 +89,7 @@ const Layout = ({ children, color }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-second md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/games");
@@ -103,7 +104,7 @@ const Layout = ({ children, color }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-second md:px-4"
                   onClick={() => {
                     setNavbar(!navbar);
                     router.push("/team");
@@ -118,7 +119,7 @@ const Layout = ({ children, color }: LayoutProps) => {
                   </Link>
                 </li>
                 <li
-                  className="nav-button cursor-pointer py-4 text-center hover:bg-secondary md:px-4"
+                  className="nav-button cursor-pointer py-4 text-center hover:bg-second md:px-4"
                   onClick={() => setNavbar(!navbar)}
                 >
                   <Link
@@ -138,7 +139,7 @@ const Layout = ({ children, color }: LayoutProps) => {
           <div className="flex content-center items-center justify-center">
             <button
               type="button"
-              className="m-3 rounded px-4 py-2 transition-all hover:bg-secondary"
+              className="m-3 rounded px-4 py-2 transition-all hover:bg-second"
               onClick={() => {
                 router.push("/login");
               }}
@@ -158,12 +159,12 @@ const Layout = ({ children, color }: LayoutProps) => {
             <div className="md:hidden">
               <button
                 type="button"
-                className="rounded-md p-2 focus:bg-secondary"
+                className="rounded-md p-2 focus:bg-second"
                 onClick={() => {
                   setNavbar(true);
                 }}
               >
-                <RiMenu3Fill className="h-[37px] w-[37px]" />
+                <Menu className="h-[37px] w-[37px]" />
               </button>
             </div>
           </div>
