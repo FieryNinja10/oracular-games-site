@@ -7,7 +7,7 @@ const FormIMG = () => {
       <Image
         src={welcome}
         alt="sign up image"
-        className="h-[35rem] w-auto self-center"
+        className="h-[35rem] w-auto self-center px-8 py-12"
       />
     </div>
   );

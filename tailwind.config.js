@@ -17,6 +17,10 @@ module.exports = {
       }
     },
     extend: {
+      height: {
+        footer: "24px",
+        nav: "69px"
+      },
       colors: {
         prime: "rgb(24, 24, 24)",
         second: "rgb(36, 36, 36)",

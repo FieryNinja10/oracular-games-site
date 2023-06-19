@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import FormIMG from "./FormIMG";
 import AuthForm from "./AuthForm";
+import { Layout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Sign up",
@@ -10,10 +11,13 @@ export const metadata: Metadata = {
 
 const Signup = () => {
   return (
-    <div className="flex h-full items-center justify-between">
+    <Layout
+      className="flex h-screen items-center justify-between"
+      isNav={false}
+    >
       <FormIMG />
       <AuthForm />
-    </div>
+    </Layout>
   );
 };
 

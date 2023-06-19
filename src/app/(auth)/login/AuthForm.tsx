@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import useForm from "@/hooks/useForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { FormEvent } from "react";
 
 const initialValues: {
@@ -27,14 +27,17 @@ const AuthForm = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
+    <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
       <div className="w-full max-w-sm text-gray-600">
-        <Button
-          className="bg-prime hover:bg-second absolute top-4 right-4"
-          onClick={() => router.push("/")}
+        <Link
+          href="/"
+          className={buttonVariants({
+            variant: "default",
+            className: "bg-prime hover:bg-second absolute top-4 right-4"
+          })}
         >
           Back
-        </Button>
+        </Link>
         <div className="text-center">
           <div className="mt-5 space-y-2">
             <h3 className="text-2xl font-bold text-gray-800 sm:text-3xl">

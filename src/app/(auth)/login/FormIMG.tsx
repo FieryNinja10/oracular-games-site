@@ -3,7 +3,9 @@ import loginIMG from "~/loginIMG.svg";
 
 const FormIMG = () => {
   return (
-    <div className="hidden h-full w-[50vw] items-center justify-center bg-prime lg:flex">
+    <div
+      className={`hidden h-full w-[50vw] items-center justify-center bg-prime lg:flex`}
+    >
       <Image
         src={loginIMG}
         alt="log in image"

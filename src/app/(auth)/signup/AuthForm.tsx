@@ -3,22 +3,27 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { FormEvent } from "react";
 import useForm from "@/hooks/useForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { FormEvent } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const initialValues: {
   username: string;
-  age: string;
+  birthday: string;
   email: string;
   password: string;
+  tosPrivacy: boolean;
+  newsletter: boolean;
 } = {
   username: "",
-  age: "",
+  birthday: "",
   email: "",
-  password: ""
+  password: "",
+  tosPrivacy: false,
+  newsletter: false
 };
 
 const AuthForm = () => {
@@ -31,14 +36,17 @@ const AuthForm = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
+    <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
       <div className="w-full max-w-sm text-gray-600">
-        <Button
-          className="bg-prime hover:bg-second absolute top-4 right-4"
-          onClick={() => router.push("/")}
+        <Link
+          href="/"
+          className={buttonVariants({
+            variant: "default",
+            className: "bg-prime hover:bg-second fixed top-4 right-4"
+          })}
         >
           Back
-        </Button>
+        </Link>
         <div className="text-center">
           <div className="mt-5 space-y-2">
             <h3 className="text-2xl font-bold text-gray-800 sm:text-3xl">
@@ -106,6 +114,28 @@ const AuthForm = () => {
               required
               onChange={handleChange}
             />
+          </div>
+          <div className="flex">
+            <Checkbox
+              id="newsletter"
+              name="newsletter"
+              className="mr-2"
+              required
+              onChange={handleChange}
+            />
+            <Label htmlFor="newsletter">Sign up for newsletter</Label>
+          </div>
+          <div className="flex">
+            <Checkbox
+              id="tosPrivacy"
+              name="tosPrivacy"
+              className="mr-2"
+              required
+              onChange={handleChange}
+            />
+            <Label htmlFor="tosPrivacy">
+              You agree to the Terms of Service and the Privacy Policy
+            </Label>
           </div>
           <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
             Sign up
