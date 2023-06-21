@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { FormEvent } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const initialValues: {
   email: string;
@@ -33,7 +34,7 @@ const AuthForm = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "bg-prime hover:bg-second absolute top-4 right-4"
+            className: "bg-prime hover:bg-second fixed top-4 right-4"
           })}
         >
           Back
@@ -54,7 +55,8 @@ const AuthForm = () => {
             </p>
           </div>
         </div>
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5 font-base">
+        <Separator className="my-4" />
+        <form onSubmit={handleSubmit} className="space-y-5 font-base">
           <div>
             <Label htmlFor="email">Email</Label>
             <Input

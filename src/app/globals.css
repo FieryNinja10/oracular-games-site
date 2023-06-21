@@ -81,6 +81,6 @@
     }
 
     body, #__next {
-        @apply overflow-x-hidden min-h-[100vh] min-w-[100vw]
+        @apply overflow-x-hidden min-h-screen min-w-full
     }
 }

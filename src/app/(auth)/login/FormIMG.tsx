@@ -1,5 +1,5 @@
 import Image from "next/image";
-import loginIMG from "~/loginIMG.svg";
+import loginIMG from "~/login.svg";
 
 const FormIMG = () => {
   return (

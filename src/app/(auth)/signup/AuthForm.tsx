@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 const initialValues: {
   username: string;
@@ -63,6 +64,7 @@ const AuthForm = () => {
             </p>
           </div>
         </div>
+        <Separator className="my-4" />
         <form onSubmit={handleSubmit} className="mt-8 space-y-5 text-base">
           <div>
             <Label htmlFor="email">Email</Label>
@@ -134,16 +136,23 @@ const AuthForm = () => {
               onChange={handleChange}
             />
             <Label htmlFor="tosPrivacy">
-              You agree to the Terms of Service and the Privacy Policy
+              You agree to the{" "}
+              <Link href="/terms" className="hover:text-rad underline">
+                Terms of Service
+              </Link>{" "}
+              and the{" "}
+              <Link href="/privacy" className="hover:text-rad underline">
+                Privacy Policy
+              </Link>
             </Label>
           </div>
           <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
             Sign up
           </Button>
           <div className="text-center font-nunito">
-            <a href="javascript:void(0)" className="hover:text-rad">
+            <Link href="javascript:void(0)" className="hover:text-rad">
               Forgot password?
-            </a>
+            </Link>
           </div>
         </form>
       </div>
