@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 
 const Details = () => {
   return (
-    <div className="flex h-full flex-[1] flex-col items-center justify-center pb-14 pt-6 text-center font-rubik text-white sm:pb-6">
+    <div className="flex h-full flex-[1] flex-col items-center justify-center py-6 text-center font-rubik text-white">
       <div className="flex max-w-[80%] flex-col">
         <h3 className="text-2xl font-bold">Subscribe to our Newsletter</h3>
         <p className="my-3 text-lg">
           Get notified on all the latest updates and more!
         </p>
       </div>
-      <form className="relative flex h-10 w-full flex-col px-6 sm:flex-row">
+      <form className="relative flex h-20 w-full flex-col px-6 sm:h-10 sm:flex-row">
         <Input
           type="email"
           placeholder="example@email.com"

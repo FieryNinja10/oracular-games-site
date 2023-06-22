@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <footer className="flex flex-col bg-second px-[8em] font-rubik text-white/50">
+    <footer className="flex flex-col bg-second px-[2em] font-rubik text-white/50">
       <div className="flex justify-between py-3 font-bold">
         <Link href="/">
           <Logo />
