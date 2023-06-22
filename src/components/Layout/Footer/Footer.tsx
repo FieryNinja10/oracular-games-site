@@ -6,16 +6,16 @@ import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <footer className="bg-second text-white/50 font-rubik flex flex-col px-[8em]">
-      <div className="flex font-bold py-3 justify-between">
+    <footer className="flex flex-col bg-second px-[8em] font-rubik text-white/50">
+      <div className="flex justify-between py-3 font-bold">
         <Link href="/">
           <Logo />
         </Link>
         <div>something else</div>
-        <Newsletter />
       </div>
+      <Newsletter />
       <Separator className="bg-white/50" />
-      <div className="font-nunito flex justify-between py-3">
+      <div className="flex justify-between py-3 font-nunito">
         <span>
           © Copyright {new Date().getFullYear()} Oracular Games, Inc. All Rights
           Reserved.
@@ -23,14 +23,14 @@ const Footer = () => {
         <div className="flex gap-3">
           <Link
             href="/terms"
-            className="hover:text-white/90 transition-all hover:underline"
+            className="transition-all hover:text-white/90 hover:underline"
           >
             Terms of Service
           </Link>
           <Separator orientation="vertical" className="bg-white/50" />
           <Link
             href="/privacy"
-            className="hover:text-white/90 transition-all hover:underline"
+            className="transition-all hover:text-white/90 hover:underline"
           >
             Privacy Policy
           </Link>

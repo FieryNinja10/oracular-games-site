@@ -40,7 +40,7 @@ const Layout = ({
   console.log(classNames);
 
   return (
-    <div className="flex min-h-[100vh] max-w-full h-auto flex-col">
+    <div className="flex h-auto min-h-[100vh] max-w-full flex-col">
       {isNav ? <Navbar color={color} /> : null}
       <div className={classNames}>{children}</div>
       {isFooter ? <Footer /> : null}

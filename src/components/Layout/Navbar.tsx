@@ -42,7 +42,7 @@ const Navbar = ({ color }: { color?: string }) => {
 
           <Link
             href="/"
-            className="cursor-pointer py-4 hover:bg-second md:px-4 transition-all"
+            className="cursor-pointer py-4 transition-all hover:bg-second md:px-4"
           >
             <Image
               src={logo}
@@ -58,7 +58,7 @@ const Navbar = ({ color }: { color?: string }) => {
           >
             <Button
               type="button"
-              className={`absolute right-4 top-2 bg-transparent focus:bg-second hover:bg-transparent md:hidden ${
+              className={`absolute right-4 top-2 bg-transparent hover:bg-transparent focus:bg-second md:hidden ${
                 navbarMenuState ? "flex" : "hidden"
               }`}
               onClick={() => {
@@ -70,21 +70,21 @@ const Navbar = ({ color }: { color?: string }) => {
             <div className="h-screen items-center justify-center md:flex md:h-auto ">
               <Link
                 href="/news"
-                className="block md:inline-block min-h-[37px] transition-all underline-offset-[0.3rem] decoration-solid decoration-rad hover:underline hover:decoration-solid hover:decoration-rad hover:decoration-4 cursor-pointer py-4 text-center hover:bg-second w-auto md:px-4 md:h-[69px]"
+                className="block min-h-[37px] w-auto cursor-pointer py-4 text-center decoration-rad decoration-solid underline-offset-[0.3rem] transition-all hover:bg-second hover:underline hover:decoration-rad hover:decoration-solid hover:decoration-4 md:inline-block md:h-[69px] md:px-4"
                 onClick={() => setNavbarMenuState(!navbarMenuState)}
               >
                 <p className="pt-2">News</p>
               </Link>
               <Link
                 href="/games"
-                className="block md:inline-block min-h-[37px] transition-all underline-offset-[0.3rem] decoration-solid decoration-rad hover:underline hover:decoration-solid hover:decoration-rad hover:decoration-4 cursor-pointer py-4 text-center hover:bg-second w-auto md:px-4 md:h-[69px]"
+                className="block min-h-[37px] w-auto cursor-pointer py-4 text-center decoration-rad decoration-solid underline-offset-[0.3rem] transition-all hover:bg-second hover:underline hover:decoration-rad hover:decoration-solid hover:decoration-4 md:inline-block md:h-[69px] md:px-4"
                 onClick={() => setNavbarMenuState(!navbarMenuState)}
               >
                 <p className="pt-2">Games</p>
               </Link>
               <Link
                 href="/team"
-                className="block md:inline-block min-h-[37px] transition-all underline-offset-[0.3rem] decoration-solid decoration-rad hover:underline hover:decoration-solid hover:decoration-rad hover:decoration-4 cursor-pointer py-4 text-center hover:bg-second w-auto md:px-4 md:h-[69px]"
+                className="block min-h-[37px] w-auto cursor-pointer py-4 text-center decoration-rad decoration-solid underline-offset-[0.3rem] transition-all hover:bg-second hover:underline hover:decoration-rad hover:decoration-solid hover:decoration-4 md:inline-block md:h-[69px] md:px-4"
                 onClick={() => setNavbarMenuState(!navbarMenuState)}
               >
                 <p className="pt-2">Meet the Team</p>
@@ -93,7 +93,7 @@ const Navbar = ({ color }: { color?: string }) => {
                 href="https://www.patreon.com/oraculargames"
                 target="_blank"
                 rel="noreferrer"
-                className="block md:inline-block min-h-[37px] transition-all underline-offset-[0.3rem] decoration-solid decoration-rad hover:underline hover:decoration-solid hover:decoration-rad hover:decoration-4 cursor-pointer py-4 text-center hover:bg-second w-auto md:px-4 md:h-[69px]"
+                className="block min-h-[37px] w-auto cursor-pointer py-4 text-center decoration-rad decoration-solid underline-offset-[0.3rem] transition-all hover:bg-second hover:underline hover:decoration-rad hover:decoration-solid hover:decoration-4 md:inline-block md:h-[69px] md:px-4"
                 onClick={() => setNavbarMenuState(!navbarMenuState)}
               >
                 <p className="pt-2">Support Us</p>
@@ -109,7 +109,7 @@ const Navbar = ({ color }: { color?: string }) => {
               buttonVariants({
                 variant: "default"
               }),
-              "bg-transparent hover:bg-second font-normal mx-3"
+              "mx-3 bg-transparent font-normal hover:bg-second"
             )}
             href="/login"
           >
@@ -121,7 +121,7 @@ const Navbar = ({ color }: { color?: string }) => {
               buttonVariants({
                 variant: "default"
               }),
-              "bg-rad hover:bg-darkRad font-normal mx-3"
+              "mx-3 bg-rad font-normal hover:bg-darkRad"
             )}
             href="/signup"
           >
@@ -131,7 +131,7 @@ const Navbar = ({ color }: { color?: string }) => {
           <div className="md:hidden">
             <Button
               type="button"
-              className="bg-transparent focus:bg-second hover:bg-transparent"
+              className="bg-transparent hover:bg-transparent focus:bg-second"
               onClick={() => {
                 setNavbarMenuState(true);
               }}
