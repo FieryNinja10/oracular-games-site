@@ -22,8 +22,8 @@ const Logo = () => {
       <Image
         alt="logo"
         src={isHover ? logoPng : logoPngBandW}
-        height={80}
-        width={80}
+        height={65}
+        width={65}
       />
     </div>
   );

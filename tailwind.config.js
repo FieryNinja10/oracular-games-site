@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       height: {
-        footer: "24px",
+        footer: "405px",
         nav: "69px"
       },
       colors: {
