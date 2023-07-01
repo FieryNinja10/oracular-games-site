@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Rubik, Nunito } from "next/font/google";
+import { Rubik, Nunito } from "@next/font/google";
 
 const rubik = Rubik({ subsets: ["latin"], variable: "--font-rubik" });
 

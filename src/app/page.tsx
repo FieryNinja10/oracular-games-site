@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Navbar } from "@/components";
+import { Layout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Oracular Games",
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const Home = () => {
-  return <Navbar>idk</Navbar>;
+  return <Layout>idk</Layout>;
 };
 
 export default Home;
