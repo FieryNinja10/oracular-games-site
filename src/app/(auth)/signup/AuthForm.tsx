@@ -111,7 +111,9 @@ const AuthForm = () => {
               {...register("email")}
             />
             {errors.email && (
-              <Badge variant="destructive">{errors.email.message}</Badge>
+              <Badge variant="destructive" className="my-2">
+                {errors.email.message}
+              </Badge>
             )}
           </div>
           <div>
@@ -126,7 +128,9 @@ const AuthForm = () => {
               {...register("password")}
             />
             {errors.password && (
-              <Badge variant="destructive">{errors.password.message}</Badge>
+              <Badge variant="destructive" className="my-2">
+                {errors.password.message}
+              </Badge>
             )}
           </div>
           <div>
@@ -140,7 +144,9 @@ const AuthForm = () => {
               {...register("username")}
             />
             {errors.username && (
-              <Badge variant="destructive">{errors.username.message}</Badge>
+              <Badge variant="destructive" className="my-2">
+                {errors.username.message}
+              </Badge>
             )}
           </div>
           <div>
@@ -153,7 +159,9 @@ const AuthForm = () => {
               {...register("birthday")}
             />
             {errors.birthday && (
-              <Badge variant="destructive">{errors.birthday.message}</Badge>
+              <Badge variant="destructive" className="my-2">
+                {errors.birthday.message}
+              </Badge>
             )}
           </div>
           <div className="flex">
@@ -165,7 +173,9 @@ const AuthForm = () => {
             />
             <Label htmlFor="newsletter">Sign up for newsletter</Label>
             {errors.newsletter && (
-              <Badge variant="destructive">{errors.newsletter.message}</Badge>
+              <Badge variant="destructive" className="mx-2">
+                {errors.newsletter.message}
+              </Badge>
             )}
           </div>
           <div className="flex">
@@ -181,7 +191,9 @@ const AuthForm = () => {
               </Link>
             </Label>
             {errors.tosPrivacy && (
-              <Badge variant="destructive">{errors.tosPrivacy.message}</Badge>
+              <Badge variant="destructive" className="mx-2">
+                {errors.tosPrivacy.message}
+              </Badge>
             )}
           </div>
           <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">

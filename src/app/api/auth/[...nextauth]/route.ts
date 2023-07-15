@@ -25,7 +25,11 @@ const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         // Get credentials inputted by user
-        const { email, password } = userLoginSchema.parse(credentials);
+        const result = userLoginSchema.safeParse(credentials);
+
+        if (!result.success) return null;
+
+        const { email, password } = result.data;
 
         // Find user by email
         const user = await prisma.user.findUnique({
@@ -34,7 +38,7 @@ const authOptions: NextAuthOptions = {
         if (!user) return null;
 
         // Check if password is correct
-        const isPassword = bcrypt.compare(password, user.password);
+        const isPassword = await bcrypt.compare(password, user.password);
         if (!isPassword) return null;
 
         return user;

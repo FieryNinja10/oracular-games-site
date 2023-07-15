@@ -9,7 +9,8 @@ export const UserRegisterSchema = z.object({
     .regex(
       /^(?!^[ _-])(?!.*[ _-]{2,})(?!.*[ _-]$)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*()_+\=\[\]{}\\|;:'",.<>\/? -]{4,20}$/g,
       "Invalid username"
-    ),
+    )
+    .optional(),
   birthday: z.date(),
   newsletter: z.boolean().optional()
 });

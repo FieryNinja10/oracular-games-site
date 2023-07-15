@@ -53,7 +53,7 @@ const AuthForm = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "fixed right-4 top-4 bg-prime hover:bg-second"
+            className: "fixed right-4 top-4 bg-prime text-white hover:bg-second"
           })}
         >
           Back
@@ -86,7 +86,9 @@ const AuthForm = () => {
               {...register("email")}
             />
             {errors.email && (
-              <Badge variant="destructive">{errors.email.message}</Badge>
+              <Badge variant="destructive" className="mx-2">
+                {errors.email.message}
+              </Badge>
             )}
           </div>
           <div>
@@ -100,10 +102,12 @@ const AuthForm = () => {
               {...register("password")}
             />
             {errors.password && (
-              <Badge variant="destructive">{errors.password.message}</Badge>
+              <Badge variant="destructive" className="mx-2">
+                {errors.password.message}
+              </Badge>
             )}
           </div>
-          <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
+          <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
             Log in
           </Button>
           <div className="text-center font-nunito">

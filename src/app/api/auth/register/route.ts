@@ -30,7 +30,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { email }
   });
 
-  if (user !== null)
+  if (user === null)
     return res.send({
       user: null,
       profile: null,
