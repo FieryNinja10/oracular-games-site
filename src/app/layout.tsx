@@ -19,7 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${rubik.variable} ${nunito.variable}`}><Providers>{children}</Providers></body>
+      <body className={`${nunito.variable} ${rubik.variable}`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

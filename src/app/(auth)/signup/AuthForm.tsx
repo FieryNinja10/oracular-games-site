@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { UserRegisterSchema } from "@/types";
 import { signIn } from "next-auth/react";
@@ -32,7 +31,7 @@ const AuthForm = () => {
 
   const router = useRouter();
 
-  const submit = async (formData: z.infer<typeof UserSignUpSchema>) => {
+  const onSubmit = async (formData: z.infer<typeof UserSignUpSchema>) => {
     if (!formData.tosPrivacy) {
       // throw toast error
       return;
@@ -68,145 +67,138 @@ const AuthForm = () => {
   };
 
   return (
-    <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
-      <div className="w-full max-w-sm text-gray-600">
-        <Link
-          href="/"
-          className={buttonVariants({
-            variant: "default",
-            className: "fixed right-4 top-4 bg-prime text-white hover:bg-second"
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mt-8 space-y-5 text-base"
+    >
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          type="email"
+          id="email"
+          placeholder="Email"
+          className="placeholder:text-gray-500 focus-visible:text-gray-600"
+          {...register("email", {
+            required: {
+              value: true,
+              message: "Email is required"
+            }
           })}
-        >
-          Back
-        </Link>
-        <div className="text-center">
-          <div className="mt-5 space-y-2">
-            <h3 className="text-2xl font-bold text-gray-800 sm:text-3xl">
-              Sign Up
-            </h3>
-            <p className="font-nunito">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-prime hover:text-rad"
-              >
-                Log in
-              </Link>
-            </p>
-          </div>
-        </div>
-        <Separator className="my-4" />
-        <form
-          onSubmit={handleSubmit(submit)}
-          className="mt-8 space-y-5 text-base"
-        >
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              placeholder="Email"
-              className="placeholder:text-gray-500 focus-visible:text-gray-600"
-              required
-              {...register("email")}
-            />
-            {errors.email && (
-              <Badge variant="destructive" className="my-2">
-                {errors.email.message}
-              </Badge>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              id="password"
-              minLength={6}
-              placeholder="Password"
-              className="placeholder:text-gray-500 focus-visible:text-gray-600"
-              required
-              {...register("password")}
-            />
-            {errors.password && (
-              <Badge variant="destructive" className="my-2">
-                {errors.password.message}
-              </Badge>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              type="text"
-              id="username"
-              placeholder="Username"
-              className="placeholder:text-gray-500 focus-visible:text-gray-600"
-              required
-              {...register("username")}
-            />
-            {errors.username && (
-              <Badge variant="destructive" className="my-2">
-                {errors.username.message}
-              </Badge>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="birthday">Birthday</Label>
-            <Input
-              type="date"
-              id="birthday"
-              className="text-gray-500 focus-visible:text-gray-600"
-              required
-              {...register("birthday")}
-            />
-            {errors.birthday && (
-              <Badge variant="destructive" className="my-2">
-                {errors.birthday.message}
-              </Badge>
-            )}
-          </div>
-          <div className="flex">
-            <Checkbox
-              id="newsletter"
-              className="mr-2"
-              required
-              {...register("newsletter")}
-            />
-            <Label htmlFor="newsletter">Sign up for newsletter</Label>
-            {errors.newsletter && (
-              <Badge variant="destructive" className="mx-2">
-                {errors.newsletter.message}
-              </Badge>
-            )}
-          </div>
-          <div className="flex">
-            <Checkbox id="tosPrivacy" className="mr-2" required />
-            <Label htmlFor="tosPrivacy">
-              You agree to the{" "}
-              <Link href="/terms" className="underline hover:text-rad">
-                Terms of Service
-              </Link>{" "}
-              and the{" "}
-              <Link href="/privacy" className="underline hover:text-rad">
-                Privacy Policy
-              </Link>
-            </Label>
-            {errors.tosPrivacy && (
-              <Badge variant="destructive" className="mx-2">
-                {errors.tosPrivacy.message}
-              </Badge>
-            )}
-          </div>
-          <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
-            Sign up
-          </Button>
-          <div className="text-center font-nunito">
-            <Link href="javascript:void(0)" className="hover:text-rad">
-              Forgot password?
-            </Link>
-          </div>
-        </form>
+        />
+        {errors.email && (
+          <Badge variant="destructive" className="my-2">
+            {errors.email.message}
+          </Badge>
+        )}
       </div>
-    </main>
+      <div>
+        <Label htmlFor="password">Password</Label>
+        <Input
+          type="password"
+          id="password"
+          placeholder="Password"
+          className="placeholder:text-gray-500 focus-visible:text-gray-600"
+          {...register("password", {
+            required: {
+              value: true,
+              message: "Password is required"
+            },
+            minLength: {
+              value: 6,
+              message: "Password must be at least 6 characters"
+            }
+          })}
+        />
+        {errors.password && (
+          <Badge variant="destructive" className="my-2">
+            {errors.password.message}
+          </Badge>
+        )}
+      </div>
+      <div>
+        <Label htmlFor="username">Username</Label>
+        <Input
+          type="text"
+          id="username"
+          placeholder="Username"
+          className="placeholder:text-gray-500 focus-visible:text-gray-600"
+          {...register("username", {
+            required: false
+          })}
+        />
+        {errors.username && (
+          <Badge variant="destructive" className="my-2">
+            {errors.username.message}
+          </Badge>
+        )}
+      </div>
+      <div>
+        <Label htmlFor="birthday">Birthday</Label>
+        <Input
+          type="date"
+          id="birthday"
+          className="text-gray-500 focus-visible:text-gray-600"
+          {...register("birthday", {
+            required: {
+              value: true,
+              message: "Birthday is required"
+            },
+            valueAsDate: true
+          })}
+        />
+        {errors.birthday && (
+          <Badge variant="destructive" className="my-2">
+            {errors.birthday.message}
+          </Badge>
+        )}
+      </div>
+      <div className="flex">
+        <Checkbox
+          id="newsletter"
+          className="mr-2"
+          {...register("newsletter", {
+            required: false
+          })}
+        />
+        <Label htmlFor="newsletter">Sign up for newsletter</Label>
+        {errors.newsletter && (
+          <Badge variant="destructive" className="mx-2">
+            {errors.newsletter.message}
+          </Badge>
+        )}
+      </div>
+      <div className="flex">
+        <Checkbox
+          id="tosPrivacy"
+          className="mr-2"
+          {...register("tosPrivacy", {
+            required: {
+              value: true,
+              message:
+                "You must agree to the Terms of Service and the Privacy Policy"
+            }
+          })}
+        />
+        <Label htmlFor="tosPrivacy">
+          You agree to the{" "}
+          <Link href="/terms" className="underline hover:text-rad">
+            Terms of Service
+          </Link>{" "}
+          and the{" "}
+          <Link href="/privacy" className="underline hover:text-rad">
+            Privacy Policy
+          </Link>
+        </Label>
+        {errors.tosPrivacy && (
+          <Badge variant="destructive" className="mx-2">
+            {errors.tosPrivacy.message}
+          </Badge>
+        )}
+      </div>
+      <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
+        Sign up
+      </Button>
+    </form>
   );
 };
 
