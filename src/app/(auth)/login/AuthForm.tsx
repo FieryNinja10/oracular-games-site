@@ -3,12 +3,16 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import useForm from "@/hooks/useForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { FormEvent } from "react";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { UserRegisterSchema } from "@/types";
+import { signIn } from "next-auth/react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const initialValues: {
   email: string;
@@ -19,12 +23,27 @@ const initialValues: {
 };
 
 const AuthForm = () => {
-  const { form, handleChange, resetForm } = useForm(initialValues);
+  const UserLoginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6, "Password should be at least 6 characters")
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<z.infer<typeof UserLoginSchema>>({
+    resolver: zodResolver(UserLoginSchema)
+  });
 
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submit = async (formData: z.infer<typeof UserLoginSchema>) => {
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      callbackUrl: "/"
+    });
   };
 
   return (
@@ -34,7 +53,7 @@ const AuthForm = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "bg-prime hover:bg-second fixed top-4 right-4"
+            className: "fixed right-4 top-4 bg-prime hover:bg-second"
           })}
         >
           Back
@@ -56,31 +75,33 @@ const AuthForm = () => {
           </div>
         </div>
         <Separator className="my-4" />
-        <form onSubmit={handleSubmit} className="space-y-5 font-base">
+        <form onSubmit={handleSubmit(submit)} className="font-base space-y-5">
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               id="email"
-              name="email"
               placeholder="Email"
               required
-              onChange={handleChange}
-              value={form.email}
+              {...register("email")}
             />
+            {errors.email && (
+              <Badge variant="destructive">{errors.email.message}</Badge>
+            )}
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
             <Input
               type="password"
               id="password"
-              name="password"
               minLength={6}
               placeholder="Password"
               required
-              onChange={handleChange}
-              value={form.password}
+              {...register("password")}
             />
+            {errors.password && (
+              <Badge variant="destructive">{errors.password.message}</Badge>
+            )}
           </div>
           <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
             Log in

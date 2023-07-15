@@ -54,7 +54,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     data: {
       userId: newUser.id,
       birthday,
-      newsletter
+      newsletter: newsletter === undefined ? false : newsletter
     }
   });
 

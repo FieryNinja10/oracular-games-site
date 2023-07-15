@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { UserRegisterSchema, UserRegisterType } from "@/types";
+import { Badge } from "@/components/ui/badge";
+import { UserRegisterSchema } from "@/types";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -60,7 +60,7 @@ const AuthForm = () => {
       // throw toast error with data.message
       return;
     }
-    signIn("credentials", {
+    await signIn("credentials", {
       email: data.user.email,
       password,
       callbackUrl: "/"
@@ -74,7 +74,7 @@ const AuthForm = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "fixed right-4 top-4 bg-prime hover:bg-second"
+            className: "fixed right-4 top-4 bg-prime text-white hover:bg-second"
           })}
         >
           Back
@@ -110,6 +110,9 @@ const AuthForm = () => {
               required
               {...register("email")}
             />
+            {errors.email && (
+              <Badge variant="destructive">{errors.email.message}</Badge>
+            )}
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
@@ -122,6 +125,9 @@ const AuthForm = () => {
               required
               {...register("password")}
             />
+            {errors.password && (
+              <Badge variant="destructive">{errors.password.message}</Badge>
+            )}
           </div>
           <div>
             <Label htmlFor="username">Username</Label>
@@ -133,6 +139,9 @@ const AuthForm = () => {
               required
               {...register("username")}
             />
+            {errors.username && (
+              <Badge variant="destructive">{errors.username.message}</Badge>
+            )}
           </div>
           <div>
             <Label htmlFor="birthday">Birthday</Label>
@@ -143,6 +152,9 @@ const AuthForm = () => {
               required
               {...register("birthday")}
             />
+            {errors.birthday && (
+              <Badge variant="destructive">{errors.birthday.message}</Badge>
+            )}
           </div>
           <div className="flex">
             <Checkbox
@@ -152,6 +164,9 @@ const AuthForm = () => {
               {...register("newsletter")}
             />
             <Label htmlFor="newsletter">Sign up for newsletter</Label>
+            {errors.newsletter && (
+              <Badge variant="destructive">{errors.newsletter.message}</Badge>
+            )}
           </div>
           <div className="flex">
             <Checkbox id="tosPrivacy" className="mr-2" required />
@@ -165,8 +180,11 @@ const AuthForm = () => {
                 Privacy Policy
               </Link>
             </Label>
+            {errors.tosPrivacy && (
+              <Badge variant="destructive">{errors.tosPrivacy.message}</Badge>
+            )}
           </div>
-          <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
+          <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
             Sign up
           </Button>
           <div className="text-center font-nunito">
