@@ -4,36 +4,67 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { FormEvent } from "react";
-import useForm from "@/hooks/useForm";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-
-const initialValues: {
-  username: string;
-  birthday: string;
-  email: string;
-  password: string;
-  tosPrivacy: boolean;
-  newsletter: boolean;
-} = {
-  username: "",
-  birthday: "",
-  email: "",
-  password: "",
-  tosPrivacy: false,
-  newsletter: false
-};
+import { UserRegisterSchema, UserRegisterType } from "@/types";
+import { signIn } from "next-auth/react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const AuthForm = () => {
-  const { form, handleChange, resetForm } = useForm(initialValues);
+  const UserSignUpSchema = UserRegisterSchema.merge(
+    z.object({
+      tosPrivacy: z.boolean()
+    })
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<z.infer<typeof UserSignUpSchema>>({
+    resolver: zodResolver(UserSignUpSchema)
+  });
 
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submit = async (formData: z.infer<typeof UserSignUpSchema>) => {
+    if (!formData.tosPrivacy) {
+      // throw toast error
+      return;
+    }
+
+    const { email, password, username, birthday, newsletter } =
+      UserRegisterSchema.parse({
+        email: formData.email,
+        password: formData.password,
+        username: formData.username,
+        birthday: formData.birthday,
+        newsletter: formData.newsletter
+      });
+
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password, username, birthday, newsletter })
+    });
+    const data = await res.json();
+
+    if (!data.user) {
+      // throw toast error with data.message
+      return;
+    }
+    signIn("credentials", {
+      email: data.user.email,
+      password,
+      callbackUrl: "/"
+    });
   };
 
   return (
@@ -43,7 +74,7 @@ const AuthForm = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "bg-prime hover:bg-second fixed top-4 right-4"
+            className: "fixed right-4 top-4 bg-prime hover:bg-second"
           })}
         >
           Back
@@ -65,18 +96,19 @@ const AuthForm = () => {
           </div>
         </div>
         <Separator className="my-4" />
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5 text-base">
+        <form
+          onSubmit={handleSubmit(submit)}
+          className="mt-8 space-y-5 text-base"
+        >
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
               type="email"
               id="email"
-              name="email"
               placeholder="Email"
               className="placeholder:text-gray-500 focus-visible:text-gray-600"
               required
-              onChange={handleChange}
-              value={form.email}
+              {...register("email")}
             />
           </div>
           <div>
@@ -84,13 +116,11 @@ const AuthForm = () => {
             <Input
               type="password"
               id="password"
-              name="password"
               minLength={6}
               placeholder="Password"
               className="placeholder:text-gray-500 focus-visible:text-gray-600"
               required
-              onChange={handleChange}
-              value={form.password}
+              {...register("password")}
             />
           </div>
           <div>
@@ -98,12 +128,10 @@ const AuthForm = () => {
             <Input
               type="text"
               id="username"
-              name="username"
               placeholder="Username"
               className="placeholder:text-gray-500 focus-visible:text-gray-600"
               required
-              onChange={handleChange}
-              value={form.username}
+              {...register("username")}
             />
           </div>
           <div>
@@ -111,37 +139,29 @@ const AuthForm = () => {
             <Input
               type="date"
               id="birthday"
-              name="birthday"
               className="text-gray-500 focus-visible:text-gray-600"
               required
-              onChange={handleChange}
+              {...register("birthday")}
             />
           </div>
           <div className="flex">
             <Checkbox
               id="newsletter"
-              name="newsletter"
               className="mr-2"
               required
-              onChange={handleChange}
+              {...register("newsletter")}
             />
             <Label htmlFor="newsletter">Sign up for newsletter</Label>
           </div>
           <div className="flex">
-            <Checkbox
-              id="tosPrivacy"
-              name="tosPrivacy"
-              className="mr-2"
-              required
-              onChange={handleChange}
-            />
+            <Checkbox id="tosPrivacy" className="mr-2" required />
             <Label htmlFor="tosPrivacy">
               You agree to the{" "}
-              <Link href="/terms" className="hover:text-rad underline">
+              <Link href="/terms" className="underline hover:text-rad">
                 Terms of Service
               </Link>{" "}
               and the{" "}
-              <Link href="/privacy" className="hover:text-rad underline">
+              <Link href="/privacy" className="underline hover:text-rad">
                 Privacy Policy
               </Link>
             </Label>
