@@ -1,5 +1,3 @@
-const { fontFamily } = require("tailwindcss/defaultTheme");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -32,7 +30,6 @@ module.exports = {
       },
       fontFamily: {
         rubik: ["var(--font-rubik)"],
-        sans: ["var(--font-sans)", ...fontFamily.sans],
         nunito: ["var(--font-nunito)"]
       },
       keyframes: {

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/lib";
+import { prisma } from "@/lib/prisma";
 import { fromZodError } from "zod-validation-error";
 import { UserRegisterSchema } from "@/types";
 import bcrypt from "bcrypt";
@@ -11,7 +11,8 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!result.success) {
     const message = fromZodError(result.error, {
-      prefix: "Error"
+      prefix: "",
+      prefixSeparator: ""
     });
 
     return res.send({
