@@ -59,14 +59,15 @@ const AuthForm = () => {
       });
 
     // http request
-    const res = await fetch("/api/register", {
+    // TODO: Change to tanstack query
+    const data = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ email, password, username, birthday, newsletter })
-    });
-    const data = await res.json();
+    }).then((res) => res.json());
+
     // check for additional error messages
     if (!data.user) {
       setErrorMessage(data.message);
