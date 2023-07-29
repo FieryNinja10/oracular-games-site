@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Rubik, Nunito } from "next/font/google";
-import Providers from './providers'
+import { Toaster } from "react-hot-toast";
+import Providers from "./providers";
 
 const rubik = Rubik({ subsets: ["latin"], variable: "--font-rubik" });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${nunito.variable} ${rubik.variable}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

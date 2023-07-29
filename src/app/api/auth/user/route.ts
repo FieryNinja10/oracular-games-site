@@ -1,13 +1,22 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { fromZodError } from "zod-validation-error";
 import { UserRegisterSchema } from "@/types";
 import bcrypt from "bcrypt";
+import z from "zod";
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
+export const POST = async (req: Request) => {
+  const data = await req.json();
   // check for zod errors
+  const UserRegisterReqSchema = UserRegisterSchema.merge(
+    z.object({
+      birthday: z
+        .string({ required_error: "Birthday is required" })
+        .datetime({ offset: true })
+    })
+  );
 
-  const result = UserRegisterSchema.safeParse(req.body);
+  const result = UserRegisterReqSchema.safeParse(data);
 
   if (!result.success) {
     const message = fromZodError(result.error, {
@@ -15,10 +24,9 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
       prefixSeparator: ""
     });
 
-    return res.send({
+    return NextResponse.json({
       user: null,
       profile: null,
-      success: false,
       message: message.message
     });
   }
@@ -31,11 +39,10 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     where: { email }
   });
 
-  if (user === null)
-    return res.send({
+  if (user !== null)
+    return NextResponse.json({
       user: null,
       profile: null,
-      success: false,
       message: "Error: User already exists"
     });
 
@@ -54,15 +61,14 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
   const newProfile = await prisma.profile.create({
     data: {
       userId: newUser.id,
-      birthday,
+      birthday: new Date(birthday),
       newsletter: newsletter === undefined ? false : newsletter
     }
   });
 
-  return res.send({
+  return NextResponse.json({
     user: newUser,
     profile: newProfile,
-    success: true,
     message: "User successfully created"
   });
 };
