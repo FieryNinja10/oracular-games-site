@@ -21,6 +21,7 @@ import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
 
 const UserLoginSchema = z.object({
   email: z.string().email(),
@@ -50,6 +51,7 @@ const AuthForm = () => {
 
     if (res === undefined) setErrorMessage("Email or password is incorrect");
     else if (res.ok!) setErrorMessage(res.error);
+    else if (res.ok) toast.success("User successfully signed in");
   };
 
   return (
