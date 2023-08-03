@@ -14,5 +14,3 @@ export const UserRegisterSchema = z.object({
   birthday: z.date(),
   newsletter: z.boolean().optional()
 });
-
-export type UserRegisterType = z.infer<typeof UserRegisterSchema>;

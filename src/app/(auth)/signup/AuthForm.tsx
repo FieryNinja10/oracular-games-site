@@ -21,7 +21,7 @@ import { useYearMonthDay } from "@/hooks";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 
-import { UserRegisterSchema, UserRegisterType } from "@/types";
+import { UserRegisterSchema } from "@/types";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -42,7 +42,7 @@ const AuthForm = () => {
   // tan-stack query
   const { mutate, data, isError, error, isSuccess, isLoading, status } =
     useMutation({
-      mutationFn: async (params: UserRegisterType) => {
+      mutationFn: async (params: z.infer<typeof UserRegisterSchema>) => {
         return axios.post("/api/auth/user", params).then((res) => res.data);
       },
       onSuccess: async (data, { password }, context) => {

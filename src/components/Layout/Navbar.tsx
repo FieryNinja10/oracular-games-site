@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
-import logo from "~/logo.png";
+import logo from "~/logo-transparent.png";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = ({ color }: { color?: string }) => {
@@ -44,13 +44,9 @@ const Navbar = ({ color }: { color?: string }) => {
 
           <Link
             href="/"
-            className="cursor-pointer py-4 transition-all hover:bg-second md:px-4"
+            className="flex cursor-pointer items-center justify-center py-[5px] transition-all hover:bg-second md:px-[5px]"
           >
-            <Image
-              src={logo}
-              alt="oracular games logo"
-              className="h-[37px] w-[37px]"
-            />
+            <Image src={logo} alt="oracular games logo" className="h-12 w-12" />
           </Link>
           {/* Links */}
           <div

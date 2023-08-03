@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,20 @@ const UserLoginSchema = z.object({
 });
 
 const AuthForm = () => {
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  useEffect(() => {
+    const data = window.localStorage.getItem("ORACULAR_LOGIN_ERROR");
+    if (data !== null) setErrorMessage(JSON.parse(data));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "ORACULAR_LOGIN_ERROR",
+      JSON.stringify(errorMessage)
+    );
+  }, [errorMessage]);
+
   // check if user is already authenticated
   const session = useSession();
   const router = useRouter();
@@ -42,16 +55,11 @@ const AuthForm = () => {
   });
 
   const onSubmit = async (formData: z.infer<typeof UserLoginSchema>) => {
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       email: formData.email,
       password: formData.password,
       callbackUrl: "/"
     });
-    console.log(res);
-
-    if (res === undefined) setErrorMessage("Email or password is incorrect");
-    else if (res.ok!) setErrorMessage(res.error);
-    else if (res.ok) toast.success("User successfully signed in");
   };
 
   return (
@@ -105,7 +113,7 @@ const AuthForm = () => {
           Log in
         </Button>
         <div className="text-center font-nunito">
-          <Link href="/forgot-password" className="hover:text-rad">
+          <Link href="/reset-password" className="hover:text-rad">
             Forgot password?
           </Link>
         </div>
