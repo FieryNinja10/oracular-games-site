@@ -90,10 +90,9 @@ export const POST = async (
       user: updatedUser,
       verify
     });
-  } catch (err) {
+  } catch (error) {
     return NextResponse.json({
-      error: "Something went wrong",
-      err
+      error: `${error}`
     });
   }
 };

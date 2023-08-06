@@ -27,12 +27,20 @@ const UserResetSchema = z.object({
 
 const AuthForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  const { mutate, data, error, isLoading, isSuccess, isError } = useMutation({
+  const { mutate, data, isLoading } = useMutation({
+    mutationKey: ["reset-password-link"],
     mutationFn: (params: z.infer<typeof UserResetSchema>) =>
       axios.post("/api/auth/reset-password", params).then((res) => res.data),
-    onError: (error, variables, context) => {},
-    onSuccess: (data, variables, context) => {}
+    onError: (error, variables, context) => setErrorMessage(`${error}`),
+    onSuccess: (data, variables, context) => {
+      if (data.error) setErrorMessage(data.error);
+      else {
+        setErrorMessage(undefined);
+        setIsSuccess(true);
+      }
+    }
   });
 
   const form = useForm<z.infer<typeof UserResetSchema>>({
@@ -78,13 +86,13 @@ const AuthForm = () => {
             disabled={isLoading}
           >
             Submit
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loader2 className="mx-2 h-4 w-4 animate-spin" />}
           </Button>
         </form>
       </Form>
       {isSuccess && (
         <>
-          <h3 className="text-center font-nunito text-xl">
+          <h3 className="pt-12 text-center font-rubik text-xl font-semibold">
             Email has been sent
           </h3>
           <p className="text-center font-nunito text-lg">

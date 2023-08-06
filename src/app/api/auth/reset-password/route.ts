@@ -8,7 +8,6 @@ export const POST = async (req: Request) => {
   const UserResetSchema = z.object({
     email: z.string().email()
   });
-
   const data = await req.json();
 
   // validate data
@@ -21,7 +20,7 @@ export const POST = async (req: Request) => {
     return NextResponse.json({
       user: null,
       profile: null,
-      message: message.message
+      error: message.message
     });
   }
 
@@ -47,7 +46,11 @@ export const POST = async (req: Request) => {
     const link = `http://localhost:3000/reset-password/${oldUser.id}/${token}`;
     console.log(link);
 
-    // send link email
+    return NextResponse.json({
+      message: "Password successfully reset"
+    });
+
+    //! send link email
   } catch (error) {
     return NextResponse.json({ error: `${error}` });
   }

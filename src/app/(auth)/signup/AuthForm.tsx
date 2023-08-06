@@ -42,6 +42,7 @@ const AuthForm = () => {
   // tan-stack query
   const { mutate, data, isError, error, isSuccess, isLoading, status } =
     useMutation({
+      mutationKey: ["user-registration"],
       mutationFn: async (params: z.infer<typeof UserRegisterSchema>) => {
         return axios.post("/api/auth/user", params).then((res) => res.data);
       },
@@ -306,7 +307,7 @@ const AuthForm = () => {
           disabled={isLoading}
         >
           Sign up
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mx-2 h-4 w-4 animate-spin" />}
         </Button>
       </form>
     </Form>
