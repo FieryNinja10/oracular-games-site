@@ -1,98 +1,124 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
-import useForm from "@/hooks/useForm";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { FormEvent } from "react";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
 
-const initialValues: {
-  email: string;
-  password: string;
-} = {
-  email: "",
-  password: ""
-};
+import { signIn } from "next-auth/react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-hot-toast";
+
+const UserLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string({
+    required_error: "Password is required"
+  })
+});
 
 const AuthForm = () => {
-  const { form, handleChange, resetForm } = useForm(initialValues);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
+  useEffect(() => {
+    const data = window.localStorage.getItem("ORACULAR_LOGIN_ERROR");
+    if (data !== null) setErrorMessage(JSON.parse(data));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "ORACULAR_LOGIN_ERROR",
+      JSON.stringify(errorMessage)
+    );
+  }, [errorMessage]);
+
+  // check if user is already authenticated
+  const session = useSession();
   const router = useRouter();
+  if (session.status === "authenticated") router.push("/already-authenticated");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const form = useForm<z.infer<typeof UserLoginSchema>>({
+    resolver: zodResolver(UserLoginSchema)
+  });
+
+  const onSubmit = async (formData: z.infer<typeof UserLoginSchema>) => {
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      callbackUrl: "/"
+    });
   };
 
   return (
-    <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik lg:w-[50vw]">
-      <div className="w-full max-w-sm text-gray-600">
-        <Link
-          href="/"
-          className={buttonVariants({
-            variant: "default",
-            className: "bg-prime hover:bg-second fixed top-4 right-4"
-          })}
-        >
-          Back
-        </Link>
-        <div className="text-center">
-          <div className="mt-5 space-y-2">
-            <h3 className="text-2xl font-bold text-gray-800 sm:text-3xl">
-              Log in to your account
-            </h3>
-            <p className="font-nunito">
-              {"Don't"} have an account?{" "}
-              <Link
-                href="/signup"
-                className="font-medium text-prime hover:text-rad"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="font-base space-y-5"
+      >
+        {errorMessage && errorMessage !== "" && errorMessage !== " " && (
+          <Badge variant="destructive" className="py-1 text-sm">
+            {errorMessage}
+          </Badge>
+        )}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field, fieldState, formState }) => (
+            <FormItem>
+              <FormLabel className="text-gray-600">Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="Email"
+                  className="ring-gray-300"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field, fieldState, formState }) => (
+            <FormItem>
+              <FormLabel className="text-gray-600">Password</FormLabel>
+              <FormControl>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  className="ring-gray-300"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
+          Log in
+        </Button>
+        <div className="text-center font-nunito">
+          <Link href="/reset-password" className="hover:text-rad">
+            Forgot password?
+          </Link>
         </div>
-        <Separator className="my-4" />
-        <form onSubmit={handleSubmit} className="space-y-5 font-base">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email"
-              required
-              onChange={handleChange}
-              value={form.email}
-            />
-          </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              minLength={6}
-              placeholder="Password"
-              required
-              onChange={handleChange}
-              value={form.password}
-            />
-          </div>
-          <Button className="w-full bg-prime hover:bg-rad active:bg-darkRad">
-            Log in
-          </Button>
-          <div className="text-center font-nunito">
-            <a href="javascript:void(0)" className="hover:text-rad">
-              Forgot password?
-            </a>
-          </div>
-        </form>
-      </div>
-    </main>
+      </form>
+    </Form>
   );
 };
 

@@ -3,20 +3,22 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 
-import logo from "~/logo.png";
+import logo from "~/logo-transparent.png";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 const Navbar = ({ color }: { color?: string }) => {
+  //check authentication
+  const { data, status, update } = useSession();
+
   // Basic Navbar Functionality
   const [navbarMenuState, setNavbarMenuState] = useState(false);
 
   const [scrolled, setScrolled] = useState(false);
-  const router = useRouter();
 
   const checkScrolled = () => {
     if (window.scrollY >= 25) {
@@ -42,13 +44,9 @@ const Navbar = ({ color }: { color?: string }) => {
 
           <Link
             href="/"
-            className="cursor-pointer py-4 transition-all hover:bg-second md:px-4"
+            className="flex cursor-pointer items-center justify-center py-[5px] transition-all hover:bg-second md:px-[5px]"
           >
-            <Image
-              src={logo}
-              alt="oracular games logo"
-              className="h-[37px] w-[37px]"
-            />
+            <Image src={logo} alt="oracular games logo" className="h-12 w-12" />
           </Link>
           {/* Links */}
           <div
@@ -103,30 +101,55 @@ const Navbar = ({ color }: { color?: string }) => {
         </div>
         {/* Sign up/Log in */}
         <div className="flex content-center items-center justify-center">
-          <Link
-            type="button"
-            className={cn(
-              buttonVariants({
-                variant: "default"
-              }),
-              "mx-3 bg-transparent font-normal hover:bg-second"
-            )}
-            href="/login"
-          >
-            Log In
-          </Link>
-          <Link
-            type="button"
-            className={cn(
-              buttonVariants({
-                variant: "default"
-              }),
-              "mx-3 bg-rad font-normal hover:bg-darkRad"
-            )}
-            href="/signup"
-          >
-            Sign Up
-          </Link>
+          {data === null ? (
+            <>
+              <Link
+                type="button"
+                className={cn(
+                  buttonVariants({
+                    variant: "default"
+                  }),
+                  "mx-3 bg-transparent font-normal hover:bg-second"
+                )}
+                href="/login"
+              >
+                Log In
+              </Link>
+              <Link
+                type="button"
+                className={cn(
+                  buttonVariants({
+                    variant: "default"
+                  }),
+                  "mx-3 bg-rad font-normal hover:bg-darkRad"
+                )}
+                href="/signup"
+              >
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button
+                className="mx-3 bg-transparent font-normal hover:bg-second"
+                onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+              >
+                Log out
+              </Button>
+              <Link
+                type="button"
+                className={cn(
+                  buttonVariants({
+                    variant: "default"
+                  }),
+                  "mx-3 bg-rad font-normal hover:bg-darkRad"
+                )}
+                href="/dashboard"
+              >
+                Dashboard
+              </Link>
+            </>
+          )}
           {/* Hamburger for mobile */}
           <div className="md:hidden">
             <Button

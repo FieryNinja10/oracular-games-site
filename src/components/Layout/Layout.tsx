@@ -37,8 +37,6 @@ const Layout = ({
       });
   }
 
-  console.log(classNames);
-
   return (
     <div className="flex h-auto min-h-[100vh] max-w-full flex-col">
       <div id="top"></div>

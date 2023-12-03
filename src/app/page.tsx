@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "The official Oracular Games website!"
 };
 
-const Home = () => {
+const Home = async () => {
   return <Layout>idk</Layout>;
 };
 
