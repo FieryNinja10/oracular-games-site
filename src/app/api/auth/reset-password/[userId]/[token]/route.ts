@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import z from "zod";
 import { fromZodError } from "zod-validation-error";
 import bcrypt from "bcrypt";
+
+import { env } from "@/lib";
+
+import db from "@/db";
+import { users } from "@/db/schema/next-auth";
+import { eq } from "drizzle-orm";
 
 export const GET = async (
   req: Request,
@@ -11,11 +16,8 @@ export const GET = async (
 ) => {
   const { userId, token } = params;
 
-  const oldUser = await prisma.user.findUnique({
-    where: {
-      id: userId
-    }
-  });
+  const user = await db.select().from(users).where(eq(users.id, userId));
+  const oldUser = user[0];
 
   if (!oldUser)
     return NextResponse.json({
@@ -58,11 +60,8 @@ export const POST = async (
     return NextResponse.json({ error: message });
   }
 
-  const oldUser = await prisma.user.findUnique({
-    where: {
-      id: userId
-    }
-  });
+  const user = await db.select().from(users).where(eq(users.id, userId));
+  const oldUser = user[0];
 
   if (!oldUser)
     return NextResponse.json({
@@ -71,19 +70,15 @@ export const POST = async (
 
   const { password } = result.data;
 
-  const secret: string = process.env.JWT_SECRET + oldUser.password;
+  const secret: string = env.JWT_SECRET + oldUser.password;
 
   try {
     const verify = jwt.verify(token, secret);
     const encryptedPassword = await bcrypt.hash(password, 10);
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: userId
-      },
-      data: {
-        password: encryptedPassword
-      }
-    });
+    const updatedUser = await db
+      .update(users)
+      .set({ password: encryptedPassword })
+      .where(eq(users.id, userId));
 
     return NextResponse.json({
       message: "Password successfully reset",

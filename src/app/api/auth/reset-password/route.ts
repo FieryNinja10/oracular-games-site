@@ -1,17 +1,22 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import z from "zod";
 import { fromZodError } from "zod-validation-error";
 
+import { env } from "@/lib";
+
+import db from "@/db";
+import { users } from "@/db/schema/next-auth";
+import { eq } from "drizzle-orm";
+
 export const POST = async (req: Request) => {
-  const UserResetSchema = z.object({
+  const userResetSchema = z.object({
     email: z.string().email()
   });
   const data = await req.json();
 
   // validate data
-  const result = UserResetSchema.safeParse(data);
+  const result = userResetSchema.safeParse(data);
   if (!result.success) {
     const message = fromZodError(result.error, {
       prefix: "",
@@ -27,14 +32,11 @@ export const POST = async (req: Request) => {
   const { email } = result.data;
 
   try {
-    const oldUser = await prisma.user.findUnique({
-      where: {
-        email
-      }
-    });
+    const user = await db.select().from(users).where(eq(users.email, email));
+    const oldUser = user[0];
     if (!oldUser) return NextResponse.json({ error: "User does not exist" });
 
-    const secret: string = process.env.JWT_SECRET + oldUser.password;
+    const secret: string = env.JWT_SECRET + oldUser.password;
     const token = jwt.sign(
       { email: oldUser.email, password: oldUser.password },
       secret,
@@ -43,7 +45,7 @@ export const POST = async (req: Request) => {
       }
     );
 
-    const link = `http://localhost:3000/reset-password/${oldUser.id}/${token}`;
+    const link = `${env.NEXTAUTH_URL}/reset-password/${oldUser.id}/${token}`;
     console.log(link);
 
     return NextResponse.json({

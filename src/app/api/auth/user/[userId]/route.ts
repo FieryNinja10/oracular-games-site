@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+
+import { users } from "@/db/schema/next-auth";
+import { profiles } from "@/db/schema/profile";
+import db from "@/db";
+import { eq } from "drizzle-orm";
 
 export const GET = async (
   req: Request,
@@ -8,21 +12,16 @@ export const GET = async (
   const userId = params.userId;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userId
-      }
-    });
+    const user = await db.select().from(users).where(eq(users.id, userId));
 
-    const profile = await prisma.profile.findUnique({
-      where: {
-        userId: userId
-      }
-    });
+    const profile = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.userId, userId));
 
     return NextResponse.json({
-      user: user,
-      profile: profile
+      user: user[0],
+      profile: profile[0]
     });
   } catch (e) {
     return NextResponse.json({
@@ -38,17 +37,18 @@ export const DELETE = async (
   const userId = params.userId;
 
   try {
-    const profile = await prisma.profile.delete({
-      where: {
-        userId: userId
-      }
-    });
+    // const profile = await prisma.profile.delete({
+    //   where: {
+    //     userId: userId
+    //   }
+    // });
 
-    const user = await prisma.user.delete({
-      where: {
-        id: userId
-      }
-    });
+    const profile = await db
+      .delete(profiles)
+      .where(eq(profiles.userId, userId))
+      .returning();
+
+    const user = await db.delete(users).where(eq(users.id, userId)).returning();
 
     return NextResponse.json({
       user: user,

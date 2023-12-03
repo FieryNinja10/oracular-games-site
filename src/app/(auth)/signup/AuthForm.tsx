@@ -21,7 +21,7 @@ import { useYearMonthDay } from "@/hooks";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
 
-import { UserRegisterSchema } from "@/types";
+import { userRegisterSchema } from "@/db/types";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ const AuthForm = () => {
   const { mutate, data, isError, error, isSuccess, isLoading, status } =
     useMutation({
       mutationKey: ["user-registration"],
-      mutationFn: async (params: z.infer<typeof UserRegisterSchema>) => {
+      mutationFn: async (params: z.infer<typeof userRegisterSchema>) => {
         return axios.post("/api/auth/user", params).then((res) => res.data);
       },
       onSuccess: async (data, { password }, context) => {
@@ -75,7 +75,7 @@ const AuthForm = () => {
     });
 
   // react hook form
-  const UserSignUpSchema = UserRegisterSchema.merge(
+  const UserSignUpSchema = userRegisterSchema.merge(
     z.object({
       tosPrivacy: z
         .boolean({
@@ -103,7 +103,7 @@ const AuthForm = () => {
   const onSubmit = async (formData: UserSignUpType) => {
     // validate data
     const { email, password, username, birthday, newsletter } =
-      UserRegisterSchema.parse({
+      userRegisterSchema.parse({
         email: formData.email,
         password: formData.password,
         username: formData.username,

@@ -1,22 +1,17 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { fromZodError } from "zod-validation-error";
-import { UserRegisterSchema } from "@/types";
+import { userRegisterSchema } from "@/db/types";
 import bcrypt from "bcrypt";
-import z from "zod";
+
+import db from "@/db";
+import { users } from "@/db/schema/next-auth";
+import { profiles } from "@/db/schema/profile";
+import { eq } from "drizzle-orm";
 
 export const POST = async (req: Request) => {
   const data = await req.json();
-  // check for zod errors
-  const UserRegisterReqSchema = UserRegisterSchema.merge(
-    z.object({
-      birthday: z
-        .string({ required_error: "Birthday is required" })
-        .datetime({ offset: true })
-    })
-  );
 
-  const result = UserRegisterReqSchema.safeParse(data);
+  const result = userRegisterSchema.safeParse(data);
 
   if (!result.success) {
     const message = fromZodError(result.error, {
@@ -35,9 +30,7 @@ export const POST = async (req: Request) => {
 
   // check if user exists
 
-  const user = await prisma.user.findUnique({
-    where: { email }
-  });
+  const user = await db.select().from(users).where(eq(users.email, email));
 
   if (user !== null)
     return NextResponse.json({
@@ -50,25 +43,41 @@ export const POST = async (req: Request) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await prisma.user.create({
-    data: {
-      email,
+  const newUser = await db
+    .insert(users)
+    .values({
+      username,
       password: hashedPassword,
-      username
-    }
-  });
+      email
+    })
+    .returning();
 
-  const newProfile = await prisma.profile.create({
-    data: {
-      userId: newUser.id,
-      birthday: new Date(birthday),
-      newsletter: newsletter === undefined ? false : newsletter
-    }
-  });
+  if (newUser[0] === undefined)
+    return NextResponse.json({
+      user: null,
+      profile: null,
+      message: "Error: Something went wrong"
+    });
+
+  const newProfile = await db
+    .insert(profiles)
+    .values({
+      userId: newUser[0].id,
+      birthday,
+      newsletter
+    })
+    .returning();
+
+  if (newProfile[0] === undefined)
+    return NextResponse.json({
+      user: null,
+      profile: null,
+      message: "Error: Something went wrong"
+    });
 
   return NextResponse.json({
-    user: newUser,
-    profile: newProfile,
+    user: newUser[0],
+    profile: newProfile[0],
     message: "User successfully created"
   });
 };
