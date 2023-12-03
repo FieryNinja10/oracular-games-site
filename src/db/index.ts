@@ -3,7 +3,7 @@ import postgres from "postgres";
 
 import { env } from "@/lib";
 
-export const queryClient = postgres(env.PG_PRIVATE_URL);
+export const queryClient = postgres(env.PG_URL);
 
 const db: PostgresJsDatabase = drizzle(queryClient);
 
