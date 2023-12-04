@@ -194,6 +194,7 @@ const AuthForm = () => {
                   className="ring-gray-300"
                   disabled={isLoading}
                   {...field}
+                  value={field.value ? field.value : ""}
                 />
               </FormControl>
               <FormMessage />
