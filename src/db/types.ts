@@ -2,6 +2,9 @@ import { z } from "zod";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { users } from "./schema/next-auth";
 
+let minDate: Date = new Date();
+let maxDate: Date = new Date();
+
 export const userRegisterSchema = createInsertSchema(users).merge(
   z.object({
     birthday: z
@@ -14,10 +17,9 @@ export const userRegisterSchema = createInsertSchema(users).merge(
         return date;
       })
       .refine((value) => {
-        const minDate = new Date("1900-01-01");
-        const maxDate = new Date("2099-12-31");
+        minDate = new Date("1900-01-01");
         return value >= minDate && value <= maxDate;
-      }, "Date must be between 01/01/1900 and 12/31/2099"),
-    newsletter: z.boolean().optional()
+      }, `Date must be between ${minDate.toLocaleDateString()} and ${maxDate.toLocaleDateString()}`),
+    newsletter: z.boolean().optional(),
   })
 );

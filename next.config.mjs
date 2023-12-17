@@ -1,6 +1,13 @@
 import "./src/env.mjs";
+import million from "million/compiler";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  reactStrictMode: true,
+};
 
-export default nextConfig;
+const millionConfig = {
+  auto: { rsc: true },
+};
+
+export default million.next(nextConfig, millionConfig);

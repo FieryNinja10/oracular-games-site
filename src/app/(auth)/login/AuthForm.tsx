@@ -1,5 +1,7 @@
 "use client";
 
+import { block } from "million/react";
+
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -14,7 +16,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 
 import { signIn } from "next-auth/react";
@@ -26,11 +28,11 @@ import { toast } from "react-hot-toast";
 const UserLoginSchema = z.object({
   email: z.string().email(),
   password: z.string({
-    required_error: "Password is required"
-  })
+    required_error: "Password is required",
+  }),
 });
 
-const AuthForm = () => {
+const AuthForm = block(() => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
@@ -51,14 +53,14 @@ const AuthForm = () => {
   if (session.status === "authenticated") router.push("/already-authenticated");
 
   const form = useForm<z.infer<typeof UserLoginSchema>>({
-    resolver: zodResolver(UserLoginSchema)
+    resolver: zodResolver(UserLoginSchema),
   });
 
   const onSubmit = async (formData: z.infer<typeof UserLoginSchema>) => {
     await signIn("credentials", {
       email: formData.email,
       password: formData.password,
-      callbackUrl: "/"
+      callbackUrl: "/",
     });
   };
 
@@ -66,7 +68,7 @@ const AuthForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="font-base space-y-5"
+        className="space-y-5 py-12 text-base"
       >
         {errorMessage && errorMessage !== "" && errorMessage !== " " && (
           <Badge variant="destructive" className="py-1 text-sm">
@@ -77,7 +79,7 @@ const AuthForm = () => {
           control={form.control}
           name="email"
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600">Email</FormLabel>
               <FormControl>
                 <Input
@@ -95,7 +97,7 @@ const AuthForm = () => {
           control={form.control}
           name="password"
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600">Password</FormLabel>
               <FormControl>
                 <Input
@@ -109,7 +111,7 @@ const AuthForm = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
+        <Button className="mt-2 w-full bg-prime text-white hover:bg-rad active:bg-darkRad">
           Log in
         </Button>
         <div className="text-center font-nunito">
@@ -120,6 +122,6 @@ const AuthForm = () => {
       </form>
     </Form>
   );
-};
+});
 
 export default AuthForm;

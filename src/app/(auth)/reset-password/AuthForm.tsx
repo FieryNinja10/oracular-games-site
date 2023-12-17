@@ -1,5 +1,7 @@
 "use client";
 
+import { block } from "million/react";
+
 import { useState } from "react";
 
 import { Loader2 } from "lucide-react";
@@ -12,7 +14,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 
 import { z } from "zod";
@@ -22,10 +24,10 @@ import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 
 const UserResetSchema = z.object({
-  email: z.string().email()
+  email: z.string().email(),
 });
 
-const AuthForm = () => {
+const AuthForm = block(() => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -40,11 +42,11 @@ const AuthForm = () => {
         setErrorMessage(undefined);
         setIsSuccess(true);
       }
-    }
+    },
   });
 
   const form = useForm<z.infer<typeof UserResetSchema>>({
-    resolver: zodResolver(UserResetSchema)
+    resolver: zodResolver(UserResetSchema),
   });
 
   const onSubmit = async (formData: z.infer<typeof UserResetSchema>) => {
@@ -61,13 +63,13 @@ const AuthForm = () => {
         )}
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="font-base space-y-5"
+          className="space-y-5 py-12 text-base"
         >
           <FormField
             control={form.control}
             name="email"
             render={({ field, fieldState, formState }) => (
-              <FormItem>
+              <FormItem className="">
                 <FormLabel className="text-gray-600">Email</FormLabel>
                 <FormControl>
                   <Input
@@ -103,6 +105,6 @@ const AuthForm = () => {
       )}
     </>
   );
-};
+});
 
 export default AuthForm;

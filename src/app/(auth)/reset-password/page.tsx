@@ -8,13 +8,13 @@ import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Forgot Password",
-  description: "Reset you password to start playing again!"
+  description: "Reset you password to start playing again!",
 };
 
 const ResetPassword = () => {
   return (
     <Layout
-      className="flex h-screen items-center justify-between"
+      className="flex min-h-screen items-center justify-between"
       isNav={false}
     >
       <main className="flex h-full w-screen flex-col items-center justify-center px-4 font-rubik">
@@ -24,7 +24,7 @@ const ResetPassword = () => {
             className={buttonVariants({
               variant: "default",
               className:
-                "fixed right-4 top-4 bg-prime text-white hover:bg-second"
+                "fixed right-4 top-4 bg-prime text-white hover:bg-second",
             })}
           >
             Back
@@ -45,7 +45,7 @@ const ResetPassword = () => {
               </p>
             </div>
           </div>
-          <Separator className="my-4" />
+          <Separator className="my-2 bg-gray-800" />
           <AuthForm />
         </div>
       </main>

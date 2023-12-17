@@ -1,5 +1,7 @@
 "use client";
 
+import { block } from "million/react";
+
 import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -15,7 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { useYearMonthDay } from "@/hooks";
 import toast from "react-hot-toast";
@@ -29,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-const AuthForm = () => {
+const AuthForm = block(() => {
   // check if user is already authenticated
   const session = useSession();
   const router = useRouter();
@@ -56,7 +58,7 @@ const AuthForm = () => {
         const res = await signIn("credentials", {
           email: data.user.email,
           password,
-          callbackUrl: "/"
+          callbackUrl: "/",
         });
 
         // throw toast
@@ -71,7 +73,7 @@ const AuthForm = () => {
       onError(error, variables, context) {
         setErrorMessage(JSON.stringify(error));
         return;
-      }
+      },
     });
 
   // react hook form
@@ -80,12 +82,12 @@ const AuthForm = () => {
       tosPrivacy: z
         .boolean({
           required_error:
-            "You have to accept the Terms of Service and the Privacy Policy"
+            "You have to accept the Terms of Service and the Privacy Policy",
         })
         .refine((val) => val, {
           message:
-            "You have to accept the Terms of Service and the Privacy Policy"
-        })
+            "You have to accept the Terms of Service and the Privacy Policy",
+        }),
     })
   );
 
@@ -96,8 +98,8 @@ const AuthForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      username: ""
-    }
+      username: "",
+    },
   });
 
   const onSubmit = async (formData: UserSignUpType) => {
@@ -108,7 +110,7 @@ const AuthForm = () => {
         password: formData.password,
         username: formData.username,
         birthday: formData.birthday,
-        newsletter: formData.newsletter
+        newsletter: formData.newsletter,
       });
 
     // http request
@@ -117,7 +119,7 @@ const AuthForm = () => {
       password,
       username,
       birthday,
-      newsletter
+      newsletter,
     });
   };
 
@@ -125,7 +127,7 @@ const AuthForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-8 space-y-5 text-base"
+        className="space-y-5 pb-12 pt-2 text-base"
       >
         {((errorMessage && errorMessage !== "" && errorMessage !== " ") ||
           isError) && (
@@ -137,7 +139,7 @@ const AuthForm = () => {
           control={form.control}
           name="email"
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600 hover:cursor-text">
                 Email
               </FormLabel>
@@ -158,7 +160,7 @@ const AuthForm = () => {
           control={form.control}
           name="password"
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600 hover:cursor-text">
                 Password
               </FormLabel>
@@ -180,10 +182,10 @@ const AuthForm = () => {
           name="username"
           rules={{
             required: false,
-            maxLength: 20
+            maxLength: 20,
           }}
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600 hover:cursor-text">
                 Username
               </FormLabel>
@@ -206,7 +208,7 @@ const AuthForm = () => {
           name="birthday"
           rules={{ pattern: undefined }}
           render={({ field, fieldState, formState }) => (
-            <FormItem>
+            <FormItem className="py-2">
               <FormLabel className="text-gray-600 hover:cursor-text">
                 Birthday
               </FormLabel>
@@ -252,7 +254,7 @@ const AuthForm = () => {
           control={form.control}
           name="newsletter"
           render={({ field, fieldState, formState }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col py-3">
               <div className="flex">
                 <FormControl>
                   <Checkbox
@@ -276,7 +278,7 @@ const AuthForm = () => {
           control={form.control}
           name="tosPrivacy"
           render={({ field, fieldState, formState }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col pb-3">
               <div className="flex">
                 <FormControl>
                   <Checkbox
@@ -313,6 +315,6 @@ const AuthForm = () => {
       </form>
     </Form>
   );
-};
+});
 
 export default AuthForm;

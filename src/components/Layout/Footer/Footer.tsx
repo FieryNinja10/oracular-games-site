@@ -1,5 +1,7 @@
 "use client";
 
+import { block } from "million/react";
+
 import Link from "next/link";
 import { useState } from "react";
 
@@ -8,7 +10,7 @@ import Newsletter from "./Newsletter/Newsletter";
 import Logo from "./Logo";
 import { ChevronUp } from "lucide-react";
 
-const Footer = () => {
+const Footer = block(() => {
   const [isTopHover, setIsTopHover] = useState<boolean>(false);
   return (
     <footer className="flex w-full flex-col bg-second px-[2em] font-rubik text-white/50">
@@ -118,6 +120,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;

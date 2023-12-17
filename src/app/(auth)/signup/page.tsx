@@ -9,13 +9,13 @@ import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Sign up",
-  description: "Sign up to start playing!"
+  description: "Sign up to start playing!",
 };
 
 const Signup = () => {
   return (
     <Layout
-      className="flex h-screen items-center justify-between"
+      className="flex min-h-screen items-center justify-between"
       isNav={false}
     >
       <FormIMG />
@@ -26,7 +26,7 @@ const Signup = () => {
             className={buttonVariants({
               variant: "default",
               className:
-                "fixed right-4 top-4 bg-prime text-white hover:bg-second"
+                "fixed right-4 top-4 bg-prime text-white hover:bg-second",
             })}
           >
             Back
@@ -47,7 +47,7 @@ const Signup = () => {
               </p>
             </div>
           </div>
-          <Separator className="my-4" />
+          <Separator className="my-2 bg-gray-800" />
           <AuthForm />
         </div>
       </main>

@@ -3,15 +3,27 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
+import { block } from "million/react";
+
 import logo from "~/logo-transparent.png";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-const Navbar = ({ color }: { color?: string }) => {
+const Navbar = block(({ color }: { color?: string }) => {
+  const router = useRouter();
+
+  // button variable
+  let normalButton = "Log In";
+  let redButton = "Sign Up";
+  let redButtonLink = "/signup";
+
+  let normalButtonHandler = () => router.push("/login");
+
   //check authentication
   const { data, status, update } = useSession();
 
@@ -31,6 +43,23 @@ const Navbar = ({ color }: { color?: string }) => {
   useEffect(() => {
     window.addEventListener("scroll", checkScrolled);
   }, []);
+
+  // button name changer
+  useEffect(() => {
+    if (status === "authenticated") {
+      normalButton = "Log Out";
+      redButton = "Dashboard";
+      redButtonLink = "/dashboard";
+
+      normalButtonHandler = () => signOut({ callbackUrl: "/", redirect: true });
+    } else {
+      normalButton = "Log In";
+      redButton = "Sign Up";
+      redButtonLink = "/signup";
+
+      normalButtonHandler = () => router.push("/login");
+    }
+  }, [status]);
 
   return (
     <nav
@@ -101,55 +130,24 @@ const Navbar = ({ color }: { color?: string }) => {
         </div>
         {/* Sign up/Log in */}
         <div className="flex content-center items-center justify-center">
-          {data === null ? (
-            <>
-              <Link
-                type="button"
-                className={cn(
-                  buttonVariants({
-                    variant: "default"
-                  }),
-                  "mx-3 bg-transparent font-normal hover:bg-second"
-                )}
-                href="/login"
-              >
-                Log In
-              </Link>
-              <Link
-                type="button"
-                className={cn(
-                  buttonVariants({
-                    variant: "default"
-                  }),
-                  "mx-3 bg-rad font-normal hover:bg-darkRad"
-                )}
-                href="/signup"
-              >
-                Sign Up
-              </Link>
-            </>
-          ) : (
-            <>
-              <Button
-                className="mx-3 bg-transparent font-normal hover:bg-second"
-                onClick={() => signOut({ callbackUrl: "/", redirect: true })}
-              >
-                Log out
-              </Button>
-              <Link
-                type="button"
-                className={cn(
-                  buttonVariants({
-                    variant: "default"
-                  }),
-                  "mx-3 bg-rad font-normal hover:bg-darkRad"
-                )}
-                href="/dashboard"
-              >
-                Dashboard
-              </Link>
-            </>
-          )}
+          <Button
+            className="mx-3 bg-transparent font-normal hover:bg-second"
+            onClick={normalButtonHandler}
+          >
+            {normalButton}
+          </Button>
+          <Link
+            type="button"
+            className={cn(
+              buttonVariants({
+                variant: "default",
+              }),
+              "mx-3 bg-rad font-normal hover:bg-darkRad"
+            )}
+            href={redButtonLink}
+          >
+            {redButton}
+          </Link>
           {/* Hamburger for mobile */}
           <div className="md:hidden">
             <Button
@@ -166,6 +164,6 @@ const Navbar = ({ color }: { color?: string }) => {
       </div>
     </nav>
   );
-};
+});
 
 export default Navbar;

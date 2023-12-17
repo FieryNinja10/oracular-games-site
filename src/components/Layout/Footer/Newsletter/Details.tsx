@@ -1,9 +1,11 @@
 "use client";
 
+import { block } from "million/react";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const Details = () => {
+const Details = block(() => {
   return (
     <div className="flex h-full flex-[1] flex-col items-center justify-center py-6 text-center font-rubik text-white">
       <div className="flex max-w-[80%] flex-col">
@@ -24,6 +26,6 @@ const Details = () => {
       </form>
     </div>
   );
-};
+});
 
 export default Details;

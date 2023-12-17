@@ -1,12 +1,14 @@
 "use client";
 
+import { block } from "million/react";
+
 import Image from "next/image";
 import { useState } from "react";
 
 import logoPng from "~/logo-transparent.png";
 import logoPngBandW from "~/logo-transparent-b&w.png";
 
-const Logo = () => {
+const Logo = block(() => {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   return (
@@ -27,6 +29,6 @@ const Logo = () => {
       />
     </div>
   );
-};
+});
 
 export default Logo;
