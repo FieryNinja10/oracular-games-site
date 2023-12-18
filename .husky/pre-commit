@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo 'Styling, testing, and building before committing'
+
+# Prettier check
+npm run check-format ||
+(
+    echo 'Prettier Check Failed. Run npm run format, add changes and try commit again.';
+    false;
+)
+
+# Eslint check
+npm run lint ||
+(
+    echo 'Eslint check failed. Fix problems issued above, add changes and try to commit again.';
+    false;
+)
+
+# Typescript check
+npm run check-types ||
+(
+    echo 'Typescript errors detected. Fix problems issued above, add changes and try to commit again.';
+    false;
+)
+
+echo 'Code has been successfully tested. Committing project now.'

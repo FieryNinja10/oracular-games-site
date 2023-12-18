@@ -88,7 +88,7 @@ const AuthForm = block(() => {
           message:
             "You have to accept the Terms of Service and the Privacy Policy",
         }),
-    })
+    }),
   );
 
   type UserSignUpType = z.infer<typeof UserSignUpSchema>;
@@ -240,8 +240,8 @@ const AuthForm = block(() => {
                       new Date(
                         Number(dateStringArray[0]),
                         Number(dateStringArray[1]) - 1,
-                        Number(dateStringArray[2])
-                      )
+                        Number(dateStringArray[2]),
+                      ),
                     );
                   }}
                 />

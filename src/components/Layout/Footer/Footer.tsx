@@ -100,8 +100,8 @@ const Footer = block(() => {
       <Separator className="bg-white/50" />
       <div className="flex justify-between py-3 font-nunito text-sm">
         <span>
-          © Copyright {new Date().getFullYear()} Oracular Games, Inc. All Rights
-          Reserved.
+          © Copyright {new Date().getFullYear()} Oracular Games, Inc. All
+          Rights Reserved.
         </span>
         <a
           href="/#top"

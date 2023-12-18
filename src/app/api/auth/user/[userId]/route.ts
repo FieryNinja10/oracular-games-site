@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) => {
   const userId = params.userId;
 
@@ -21,18 +21,18 @@ export const GET = async (
 
     return NextResponse.json({
       user: user[0],
-      profile: profile[0]
+      profile: profile[0],
     });
   } catch (e) {
     return NextResponse.json({
-      error: `${e}`
+      error: `${e}`,
     });
   }
 };
 
 export const DELETE = async (
   req: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: { userId: string } },
 ) => {
   const userId = params.userId;
 
@@ -52,11 +52,11 @@ export const DELETE = async (
 
     return NextResponse.json({
       user: user,
-      profile: profile
+      profile: profile,
     });
   } catch (e) {
     return NextResponse.json({
-      error: `${e}`
+      error: `${e}`,
     });
   }
 };

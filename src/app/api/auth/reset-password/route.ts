@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
 
 export const POST = async (req: Request) => {
   const userResetSchema = z.object({
-    email: z.string().email()
+    email: z.string().email(),
   });
   const data = await req.json();
 
@@ -20,12 +20,12 @@ export const POST = async (req: Request) => {
   if (!result.success) {
     const message = fromZodError(result.error, {
       prefix: "",
-      prefixSeparator: ""
+      prefixSeparator: "",
     });
     return NextResponse.json({
       user: null,
       profile: null,
-      error: message.message
+      error: message.message,
     });
   }
 
@@ -41,15 +41,15 @@ export const POST = async (req: Request) => {
       { email: oldUser.email, password: oldUser.password },
       secret,
       {
-        expiresIn: "10m"
-      }
+        expiresIn: "10m",
+      },
     );
 
     const link = `${env.NEXTAUTH_URL}/reset-password/${oldUser.id}/${token}`;
     console.log(link);
 
     return NextResponse.json({
-      message: "Password successfully reset"
+      message: "Password successfully reset",
     });
 
     //! send link email

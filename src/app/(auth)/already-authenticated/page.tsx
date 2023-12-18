@@ -17,7 +17,7 @@ const AlreadyAuthenticated = block(() => {
 
   useEffect(() => {
     startCountdown();
-  }, []);
+  }, [startCountdown]);
 
   useEffect(() => {
     if (isFinished) router.push("/");

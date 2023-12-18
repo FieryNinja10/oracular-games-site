@@ -21,5 +21,5 @@ export const userRegisterSchema = createInsertSchema(users).merge(
         return value >= minDate && value <= maxDate;
       }, `Date must be between ${minDate.toLocaleDateString()} and ${maxDate.toLocaleDateString()}`),
     newsletter: z.boolean().optional(),
-  })
+  }),
 );

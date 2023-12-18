@@ -16,13 +16,13 @@ export const POST = async (req: Request) => {
   if (!result.success) {
     const message = fromZodError(result.error, {
       prefix: "",
-      prefixSeparator: ""
+      prefixSeparator: "",
     });
 
     return NextResponse.json({
       user: null,
       profile: null,
-      message: message.message
+      message: message.message,
     });
   }
 
@@ -36,7 +36,7 @@ export const POST = async (req: Request) => {
     return NextResponse.json({
       user: null,
       profile: null,
-      message: "Error: User already exists"
+      message: "Error: User already exists",
     });
 
   // hash password and create user
@@ -48,7 +48,7 @@ export const POST = async (req: Request) => {
     .values({
       username,
       password: hashedPassword,
-      email
+      email,
     })
     .returning();
 
@@ -56,7 +56,7 @@ export const POST = async (req: Request) => {
     return NextResponse.json({
       user: null,
       profile: null,
-      message: "Error: Something went wrong"
+      message: "Error: Something went wrong",
     });
 
   const newProfile = await db
@@ -64,7 +64,7 @@ export const POST = async (req: Request) => {
     .values({
       userId: newUser[0].id,
       birthday,
-      newsletter
+      newsletter,
     })
     .returning();
 
@@ -72,12 +72,12 @@ export const POST = async (req: Request) => {
     return NextResponse.json({
       user: null,
       profile: null,
-      message: "Error: Something went wrong"
+      message: "Error: Something went wrong",
     });
 
   return NextResponse.json({
     user: newUser[0],
     profile: newProfile[0],
-    message: "User successfully created"
+    message: "User successfully created",
   });
 };

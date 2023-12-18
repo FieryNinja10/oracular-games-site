@@ -3,7 +3,7 @@ import { Layout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Oracular Games",
-  description: "The official Oracular Games website!"
+  description: "The official Oracular Games website!",
 };
 
 const Home = async () => {

@@ -5,11 +5,11 @@ export const DELETE = async (req: Request) => {
     const data = await req.json();
 
     return NextResponse.json({
-      data: data
+      data: data,
     });
   } catch (err) {
     return NextResponse.json({
-      error: err
+      error: err,
     });
   }
 };

@@ -10,11 +10,11 @@ const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 
 export const metadata: Metadata = {
   title: "Oracular Games",
-  description: "The official Oracular Games website!"
+  description: "The official Oracular Games website!",
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

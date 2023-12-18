@@ -130,7 +130,7 @@ const AuthForm = block(
         )}
       </>
     );
-  }
+  },
 );
 
 export default AuthForm;

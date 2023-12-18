@@ -22,7 +22,7 @@ const PageNotFound = () => {
           href="/"
           className={buttonVariants({
             variant: "default",
-            className: "bg-transparent uppercase hover:bg-second"
+            className: "bg-transparent uppercase hover:bg-second",
           })}
         >
           Go home

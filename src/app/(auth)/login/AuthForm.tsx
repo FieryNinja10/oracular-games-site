@@ -43,7 +43,7 @@ const AuthForm = block(() => {
   useEffect(() => {
     window.localStorage.setItem(
       "ORACULAR_LOGIN_ERROR",
-      JSON.stringify(errorMessage)
+      JSON.stringify(errorMessage),
     );
   }, [errorMessage]);
 

@@ -10,12 +10,12 @@ import { eq } from "drizzle-orm";
 
 const UserLoginSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6, "Password should be at least 6 characters")
+  password: z.string().min(6, "Password should be at least 6 characters"),
 });
 
 export const {
   handlers: { GET, POST },
-  auth
+  auth,
 } = NextAuth({
   adapter: DrizzleAdapter(db),
   providers: [
@@ -26,8 +26,8 @@ export const {
         password: {
           label: "Password",
           type: "password",
-          placeholder: "Password"
-        }
+          placeholder: "Password",
+        },
       },
       async authorize(credentials, req) {
         // Get credentials inputted by user
@@ -49,8 +49,8 @@ export const {
         if (!isPassword) return null;
 
         return user[0];
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     session({ session, token }) {
@@ -68,13 +68,13 @@ export const {
       }
 
       return token;
-    }
+    },
   },
   pages: {
-    signIn: "/login"
+    signIn: "/login",
   },
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
-  secret: process.env.JWT_SECRET
+  secret: process.env.JWT_SECRET,
 });

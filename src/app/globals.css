@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @layer base {
-    * {
-        @apply box-border;
-    }
+  * {
+    @apply box-border;
+  }
 
-    body,
-    #__next {
-        @apply overflow-x-hidden min-h-screen min-w-full
-    }
+  body,
+  #__next {
+    @apply overflow-x-hidden min-h-screen min-w-full;
+  }
 }

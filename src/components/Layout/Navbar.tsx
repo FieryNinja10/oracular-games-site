@@ -18,11 +18,13 @@ const Navbar = block(({ color }: { color?: string }) => {
   const router = useRouter();
 
   // button variable
-  let normalButton = "Log In";
-  let redButton = "Sign Up";
-  let redButtonLink = "/signup";
+  const [normalButton, setNormalButton] = useState("Log In");
+  const [redButton, setRedButton] = useState("Sign Up");
+  const [redButtonLink, setRedButtonLink] = useState("/signup");
 
-  let normalButtonHandler = () => router.push("/login");
+  const [normalButtonHandler, setNormalButtonHandler] = useState<() => void>(
+    () => router.push("/login"),
+  );
 
   //check authentication
   const { data, status, update } = useSession();
@@ -47,19 +49,21 @@ const Navbar = block(({ color }: { color?: string }) => {
   // button name changer
   useEffect(() => {
     if (status === "authenticated") {
-      normalButton = "Log Out";
-      redButton = "Dashboard";
-      redButtonLink = "/dashboard";
+      setNormalButton("Log Out");
+      setRedButton("Dashboard");
+      setRedButtonLink("/dashboard");
 
-      normalButtonHandler = () => signOut({ callbackUrl: "/", redirect: true });
+      setNormalButtonHandler(() =>
+        signOut({ callbackUrl: "/", redirect: true }),
+      );
     } else {
-      normalButton = "Log In";
-      redButton = "Sign Up";
-      redButtonLink = "/signup";
+      setNormalButton("Log In");
+      setRedButton("Sign Up");
+      setRedButtonLink("/signup");
 
-      normalButtonHandler = () => router.push("/login");
+      setNormalButtonHandler(() => router.push("/login"));
     }
-  }, [status]);
+  }, [status, router]);
 
   return (
     <nav
@@ -142,7 +146,7 @@ const Navbar = block(({ color }: { color?: string }) => {
               buttonVariants({
                 variant: "default",
               }),
-              "mx-3 bg-rad font-normal hover:bg-darkRad"
+              "mx-3 bg-rad font-normal hover:bg-darkRad",
             )}
             href={redButtonLink}
           >

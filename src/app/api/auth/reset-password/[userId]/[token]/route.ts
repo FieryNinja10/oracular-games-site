@@ -12,7 +12,7 @@ import { eq } from "drizzle-orm";
 
 export const GET = async (
   req: Request,
-  { params }: { params: { userId: string; token: string } }
+  { params }: { params: { userId: string; token: string } },
 ) => {
   const { userId, token } = params;
 
@@ -21,7 +21,7 @@ export const GET = async (
 
   if (!oldUser)
     return NextResponse.json({
-      error: "User does not exist"
+      error: "User does not exist",
     });
 
   const secret: string = process.env.JWT_SECRET + oldUser.password;
@@ -29,21 +29,21 @@ export const GET = async (
     const verify = jwt.verify(token, secret);
     return NextResponse.json({
       verified: true,
-      verify: verify
+      verify: verify,
     });
   } catch (error) {
     return NextResponse.json({
-      verified: false
+      verified: false,
     });
   }
 };
 
 export const POST = async (
   req: Request,
-  { params }: { params: { userId: string; token: string } }
+  { params }: { params: { userId: string; token: string } },
 ) => {
   const ResetPasswordSchema = z.object({
-    password: z.string().min(6, "Password should be at least 6 characters")
+    password: z.string().min(6, "Password should be at least 6 characters"),
   });
 
   const { userId, token } = params;
@@ -55,7 +55,7 @@ export const POST = async (
   if (!result.success) {
     const message = fromZodError(result.error, {
       prefix: "",
-      prefixSeparator: ""
+      prefixSeparator: "",
     });
     return NextResponse.json({ error: message });
   }
@@ -65,7 +65,7 @@ export const POST = async (
 
   if (!oldUser)
     return NextResponse.json({
-      error: "User does not exist"
+      error: "User does not exist",
     });
 
   const { password } = result.data;
@@ -83,11 +83,11 @@ export const POST = async (
     return NextResponse.json({
       message: "Password successfully reset",
       user: updatedUser,
-      verify
+      verify,
     });
   } catch (error) {
     return NextResponse.json({
-      error: `${error}`
+      error: `${error}`,
     });
   }
 };

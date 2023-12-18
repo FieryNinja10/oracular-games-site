@@ -10,7 +10,7 @@ const Layout = ({
   override = false,
   color,
   isNav = true,
-  isFooter = true
+  isFooter = true,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -33,7 +33,7 @@ const Layout = ({
           isNav && isFooter,
         "mt-[theme(height.nav)] min-h-[calc(100vh-theme(height.nav))]":
           isNav && !isFooter,
-        "min-h-[calc(100vh-theme(height.footer))]": !isNav && isFooter
+        "min-h-[calc(100vh-theme(height.footer))]": !isNav && isFooter,
       });
   }
 
