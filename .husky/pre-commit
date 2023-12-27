@@ -24,4 +24,4 @@ npm run check-types ||
     false;
 )
 
-echo 'Code has been successfully tested. Committing project now.'
+echo 'Code has been successfully tested. To lint project before committing run npm run lint-all. Committing project now.'

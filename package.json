@@ -11,7 +11,7 @@
     "check-format": "prettier --check .",
     "check-types": "tsc --pretty --noEmit",
     "format": "prettier --write .",
-    "test": "npm run lint && npm run check-format && npm run check-types"
+    "lint-all": "npm run lint && npm run check-format && npm run check-types"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.8",
