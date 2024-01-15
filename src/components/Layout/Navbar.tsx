@@ -9,22 +9,11 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
-import { block } from "million/react";
-
 import logo from "~/logo-transparent.png";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-const Navbar = block(({ color }: { color?: string }) => {
+const Navbar = ({ color }: { color?: string }) => {
   const router = useRouter();
-
-  // button variable
-  const [normalButton, setNormalButton] = useState("Log In");
-  const [redButton, setRedButton] = useState("Sign Up");
-  const [redButtonLink, setRedButtonLink] = useState("/signup");
-
-  const [normalButtonHandler, setNormalButtonHandler] = useState<() => void>(
-    () => router.push("/login"),
-  );
 
   //check authentication
   const { data, status, update } = useSession();
@@ -45,25 +34,6 @@ const Navbar = block(({ color }: { color?: string }) => {
   useEffect(() => {
     window.addEventListener("scroll", checkScrolled);
   }, []);
-
-  // button name changer
-  useEffect(() => {
-    if (status === "authenticated") {
-      setNormalButton("Log Out");
-      setRedButton("Dashboard");
-      setRedButtonLink("/dashboard");
-
-      setNormalButtonHandler(() =>
-        signOut({ callbackUrl: "/", redirect: true }),
-      );
-    } else {
-      setNormalButton("Log In");
-      setRedButton("Sign Up");
-      setRedButtonLink("/signup");
-
-      setNormalButtonHandler(() => router.push("/login"));
-    }
-  }, [status, router]);
 
   return (
     <nav
@@ -134,24 +104,49 @@ const Navbar = block(({ color }: { color?: string }) => {
         </div>
         {/* Sign up/Log in */}
         <div className="flex content-center items-center justify-center">
-          <Button
-            className="mx-3 bg-transparent font-normal hover:bg-second"
-            onClick={normalButtonHandler}
-          >
-            {normalButton}
-          </Button>
-          <Link
-            type="button"
-            className={cn(
-              buttonVariants({
-                variant: "default",
-              }),
-              "mx-3 bg-rad font-normal hover:bg-darkRad",
-            )}
-            href={redButtonLink}
-          >
-            {redButton}
-          </Link>
+          {status === "authenticated" ? (
+            <>
+              <Button
+                className="mx-3 bg-transparent font-normal hover:bg-second"
+                onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+              >
+                Log Out
+              </Button>
+              <Link
+                type="button"
+                className={cn(
+                  buttonVariants({
+                    variant: "default",
+                  }),
+                  "mx-3 bg-rad font-normal hover:bg-darkRad",
+                )}
+                href={"/dashboard"}
+              >
+                Dashboard
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button
+                className="mx-3 bg-transparent font-normal hover:bg-second"
+                onClick={() => router.push("/login")}
+              >
+                Log In
+              </Button>
+              <Link
+                type="button"
+                className={cn(
+                  buttonVariants({
+                    variant: "default",
+                  }),
+                  "mx-3 bg-rad font-normal hover:bg-darkRad",
+                )}
+                href={"/signup"}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
           {/* Hamburger for mobile */}
           <div className="md:hidden">
             <Button
@@ -168,6 +163,6 @@ const Navbar = block(({ color }: { color?: string }) => {
       </div>
     </nav>
   );
-});
+};
 
 export default Navbar;

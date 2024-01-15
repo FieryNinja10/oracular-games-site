@@ -103,20 +103,6 @@ const Footer = block(() => {
           © Copyright {new Date().getFullYear()} Oracular Games, Inc. All
           Rights Reserved.
         </span>
-        <a
-          href="/#top"
-          className="group flex items-center justify-center uppercase transition-all duration-300 hover:text-white/90"
-          onMouseEnter={() => setIsTopHover(true)}
-          onMouseLeave={() => setIsTopHover(false)}
-        >
-          Back to the top
-          <ChevronUp
-            className="transition-all duration-300"
-            color={!isTopHover ? "#808080" : "#ff0000"}
-            height={18}
-            width={18}
-          />
-        </a>
       </div>
     </footer>
   );

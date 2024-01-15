@@ -8,6 +8,7 @@ const FormIMG = () => {
         src={loginIMG}
         alt="log in image"
         className="h-[35rem] w-auto self-center px-8 py-12"
+        priority={true}
       />
     </div>
   );
