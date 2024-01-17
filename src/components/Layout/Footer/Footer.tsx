@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import Newsletter from "./Newsletter/Newsletter";
 import Logo from "./Logo";
-import { ChevronUp } from "lucide-react";
 
 const Footer = block(() => {
   const [isTopHover, setIsTopHover] = useState<boolean>(false);
