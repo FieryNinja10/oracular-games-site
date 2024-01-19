@@ -10,7 +10,6 @@ import Newsletter from "./Newsletter/Newsletter";
 import Logo from "./Logo";
 
 const Footer = block(() => {
-  const [isTopHover, setIsTopHover] = useState<boolean>(false);
   return (
     <footer className="flex w-full flex-col bg-second px-[2em] font-rubik text-white/50">
       <div className="flex flex-col items-center justify-between py-3 font-bold md:flex-row">
