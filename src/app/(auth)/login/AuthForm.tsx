@@ -1,7 +1,5 @@
 "use client";
 
-import { block } from "million/react";
-
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -32,7 +30,7 @@ const UserLoginSchema = z.object({
   }),
 });
 
-const AuthForm = block(() => {
+const AuthForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   useEffect(() => {
@@ -122,6 +120,6 @@ const AuthForm = block(() => {
       </form>
     </Form>
   );
-});
+};
 
 export default AuthForm;

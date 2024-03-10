@@ -1,7 +1,5 @@
 "use client";
 
-import { block } from "million/react";
-
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -10,7 +8,7 @@ import { useCountdown } from "@/hooks";
 import securityIMG from "~/security.svg";
 import { Layout } from "@/components";
 
-const AlreadyAuthenticated = block(() => {
+const AlreadyAuthenticated = () => {
   const router = useRouter();
 
   const { secondsLeft, startCountdown, isFinished } = useCountdown(5);
@@ -36,6 +34,6 @@ const AlreadyAuthenticated = block(() => {
       <p className="text-2xl">You will be redirected in: {secondsLeft}</p>
     </Layout>
   );
-});
+};
 
 export default AlreadyAuthenticated;

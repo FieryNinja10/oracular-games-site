@@ -1,7 +1,5 @@
 "use client";
 
-import { block } from "million/react";
-
 import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -31,7 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-const AuthForm = block(() => {
+const AuthForm = () => {
   // check if user is already authenticated
   const session = useSession();
   const router = useRouter();
@@ -315,6 +313,6 @@ const AuthForm = block(() => {
       </form>
     </Form>
   );
-});
+};
 
 export default AuthForm;

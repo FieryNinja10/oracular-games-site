@@ -1,7 +1,5 @@
 "use client";
 
-import { block } from "million/react";
-
 import { useState } from "react";
 
 import { Loader2 } from "lucide-react";
@@ -27,7 +25,7 @@ const UserResetSchema = z.object({
   email: z.string().email(),
 });
 
-const AuthForm = block(() => {
+const AuthForm = () => {
   const [errorMessage, setErrorMessage] = useState<string>();
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -105,6 +103,6 @@ const AuthForm = block(() => {
       )}
     </>
   );
-});
+};
 
 export default AuthForm;
