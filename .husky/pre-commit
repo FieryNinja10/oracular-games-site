@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo 'Styling, testing, and building before committing'
+echo 'Styling, testing, and linting before committing'
 
 # Prettier check
 npm run check-format ||
